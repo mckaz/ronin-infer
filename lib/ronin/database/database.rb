@@ -26,6 +26,7 @@ require 'ronin/config'
 require 'yaml'
 require 'dm-core'
 
+
 module Ronin
   #
   # Manages the {Database} configuration and the defined repositories.

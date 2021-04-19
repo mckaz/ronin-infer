@@ -131,7 +131,7 @@ module Ronin
         formatter = lambda { |value|
           case value
           when Array
-            value.map(&formatter).join(', ')
+            RDL.type_cast(value.map(&formatter), "Array<String>").join(', ')
           when Symbol
             DataMapper::Inflector.humanize(value)
           else

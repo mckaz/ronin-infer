@@ -100,7 +100,7 @@ module Ronin
                   elsif git?   then :git
                   end
 
-            repository = begin
+            repository = RDL.type_cast(begin
                            if File.directory?(@uri)
                              # add local repositories
                              Repository.add(:path => @uri, :scm => scm)
@@ -111,7 +111,7 @@ module Ronin
                          rescue DuplicateRepository => e
                            print_error e.message
                            exit -1
-                         end
+                         end, "Ronin::Repository")
 
             print_info "Repository #{repository} installed."
 

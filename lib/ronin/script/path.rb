@@ -97,7 +97,7 @@ module Ronin
                        end
 
         # filter out non-script classes
-        return loaded_class if loaded_class < Script
+        return loaded_class if RDL.type_cast(loaded_class, "Class") < Script
       end
 
       #

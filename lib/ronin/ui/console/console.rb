@@ -23,7 +23,7 @@ require 'ronin/repository'
 
 require 'ripl'
 require 'ripl/multi_line'
-require 'ripl/auto_indent'
+#require 'ripl/auto_indent' # MKCHANGE
 
 module Ronin
   module UI

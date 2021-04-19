@@ -1,0 +1,3147 @@
+Class,Method Name,Arg/Ret/Var,Variable Name,Inferred Type,Original Type,Exact (E) / Up to Parameter (P) / Got Type (T) / None (N),Solution Source,Source Code
+[s]Ronin::Address,parse,Arg,address,String,String,E,Twin,"def self.parse(address)
+      first_or_new(:address => address)
+    end"
+[s]Ronin::Address,parse,Ret,"",Ronin::Script::Testable,Address,T,Twin,"def self.parse(address)
+      first_or_new(:address => address)
+    end"
+Ronin::Address,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      self.address.to_s
+    end"
+Ronin::Address,inspect,Ret,"",String,String,E,Constraints,"def inspect
+      ""#<#{self.class}: #{self.address}>""
+    end"
+Ronin::Author,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      if self.email then ""#{self.name} <#{self.email}>""
+      else               super
+      end
+    end"
+[s]Ronin::Campaign,targeting,Arg,addr,String,(Array<String> or String),T,Twin,"def self.targeting(addr)
+      all('addresses.address' => addr)
+    end"
+[s]Ronin::Campaign,targeting,Ret,"",Array<URL>,Array<Campaign>,P,Twin,"def self.targeting(addr)
+      all('addresses.address' => addr)
+    end"
+[s]Ronin::Campaign,targeting_orgs,Arg,names,{ [s]Ronin::Campaign#targeting_orgs arg: names },(Array<String> or String),N,,"def self.targeting_orgs(names)
+      all('organizations.name' => names)
+    end"
+[s]Ronin::Campaign,targeting_orgs,Ret,"",Array<URL>,Array<Campaign>,P,Twin,"def self.targeting_orgs(names)
+      all('organizations.name' => names)
+    end"
+Ronin::Campaign,targets?,Arg,address,String,Address,T,Twin,"def targets?(address)
+      self.addresses.include?(address)
+    end"
+Ronin::Campaign,targets?,Ret,"",(false or true),(false or true),E,Twin,"def targets?(address)
+      self.addresses.include?(address)
+    end"
+Ronin::Campaign,target!,Arg,addr,String,String,E,Twin,"def target!(addr)
+      unless (address = Address.first(:address => addr))
+        raise(""unknown address #{addr.dump}"")
+      end
+
+      return Target.first_or_create(:campaign => self, :address => address)
+    end"
+Ronin::Campaign,target!,Ret,"",(false or true),Target,T,Twin,"def target!(addr)
+      unless (address = Address.first(:address => addr))
+        raise(""unknown address #{addr.dump}"")
+      end
+
+      return Target.first_or_create(:campaign => self, :address => address)
+    end"
+[s]Ronin::Config,load,Arg,name,?String,(String or Symbol),E,Constraints,"def Config.load(name=nil)
+      dir, file = if name then [CONFIG_DIR, ""#{name}.rb""]
+                  else         [PATH, 'config.rb']
+                  end
+
+      path = File.expand_path(File.join(dir,file))
+      require path if File.file?(path)
+    end"
+[s]Ronin::Config,tmp_dir,Arg,sub_path,?((Array<String> or File or [ to_str: () -> String ])),String,T,Constraints,"def Config.tmp_dir(sub_path=nil)
+      if sub_path
+        sub_path = File.expand_path(File.join('',sub_path))
+        path     = File.join(TMP_DIR,sub_path)
+
+        FileUtils.mkdir_p(path) unless File.exist?(path)
+        return path
+      end
+
+      return TMP_DIR
+    end"
+[s]Ronin::Config,tmp_dir,Ret,"",String,String,E,Constraints,"def Config.tmp_dir(sub_path=nil)
+      if sub_path
+        sub_path = File.expand_path(File.join('',sub_path))
+        path     = File.join(TMP_DIR,sub_path)
+
+        FileUtils.mkdir_p(path) unless File.exist?(path)
+        return path
+      end
+
+      return TMP_DIR
+    end"
+[s]Ronin::Credential,for_user,Arg,name,String,String,E,Twin,"def self.for_user(name)
+      all('user_name.name' => name)
+    end"
+[s]Ronin::Credential,for_user,Ret,"",Array<URL>,Array<Credential>,P,Twin,"def self.for_user(name)
+      all('user_name.name' => name)
+    end"
+[s]Ronin::Credential,with_password,Arg,password,{ [s]Ronin::Credential#with_password arg: password },String,N,,"def self.with_password(password)
+      all('password.clear_text' => password)
+    end"
+[s]Ronin::Credential,with_password,Ret,"",Array<URL>,Array<Credential>,P,Twin,"def self.with_password(password)
+      all('password.clear_text' => password)
+    end"
+Ronin::Credential,user,Ret,"",String,String,E,Twin,"def user
+      self.user_name.name if self.user_name
+    end"
+Ronin::Credential,clear_text,Ret,"",String,String,E,Twin,"def clear_text
+      self.password.clear_text if self.password
+    end"
+Ronin::Credential,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      ""#{self.user_name}:#{self.password}""
+    end"
+[s]Ronin::EmailAddress,extract,Arg,text,String,String,E,Twin,"def self.extract(text)
+      return enum_for(__method__,text).to_a unless block_given?
+
+      scanner = StringScanner.new(text)
+
+      while scanner.skip_until(Regexp::EMAIL_ADDR)
+        yield parse(scanner.matched)
+      end
+
+      return nil
+    end"
+[s]Ronin::EmailAddress,extract,Ret,"",Array<%any>,Array<EmailAddress>,P,Constraints,"def self.extract(text)
+      return enum_for(__method__,text).to_a unless block_given?
+
+      scanner = StringScanner.new(text)
+
+      while scanner.skip_until(Regexp::EMAIL_ADDR)
+        yield parse(scanner.matched)
+      end
+
+      return nil
+    end"
+[s]Ronin::EmailAddress,with_hosts,Arg,names,{ [s]Ronin::EmailAddress#with_hosts arg: names },(Array<String> or String),N,,"def self.with_hosts(names)
+      all('host_name.address' => names)
+    end"
+[s]Ronin::EmailAddress,with_hosts,Ret,"",Array<URL>,Array<EmailAddress>,P,Twin,"def self.with_hosts(names)
+      all('host_name.address' => names)
+    end"
+[s]Ronin::EmailAddress,with_ips,Arg,ips,{ [s]Ronin::EmailAddress#with_ips arg: ips },(Array<String> or String),N,,"def self.with_ips(ips)
+      all('ip_addresses.address' => ips)
+    end"
+[s]Ronin::EmailAddress,with_ips,Ret,"",Array<URL>,Array<EmailAddress>,P,Twin,"def self.with_ips(ips)
+      all('ip_addresses.address' => ips)
+    end"
+[s]Ronin::EmailAddress,with_users,Arg,names,{ [s]Ronin::EmailAddress#with_users arg: names },(Array<String> or String),N,,"def self.with_users(names)
+      all('user_name.name' => names)
+    end"
+[s]Ronin::EmailAddress,with_users,Ret,"",Array<URL>,Array<EmailAddress>,P,Twin,"def self.with_users(names)
+      all('user_name.name' => names)
+    end"
+[s]Ronin::EmailAddress,parse,Arg,email,String,String,E,Twin,"def self.parse(email)
+      user, host = email.split('@',2)
+
+      user.strip!
+
+      if user.empty?
+        raise(""email address #{email.dump} must have a user name"")
+      end
+
+      host.strip!
+
+      if host.empty?
+        raise(""email address #{email.dump} must have a host name"")
+      end
+
+      return first_or_new(
+        :user_name => UserName.first_or_new(:name => user),
+        :host_name => HostName.first_or_new(:address => host)
+      )
+    end"
+[s]Ronin::EmailAddress,parse,Ret,"",(false or true),EmailAddress,T,Twin,"def self.parse(email)
+      user, host = email.split('@',2)
+
+      user.strip!
+
+      if user.empty?
+        raise(""email address #{email.dump} must have a user name"")
+      end
+
+      host.strip!
+
+      if host.empty?
+        raise(""email address #{email.dump} must have a host name"")
+      end
+
+      return first_or_new(
+        :user_name => UserName.first_or_new(:name => user),
+        :host_name => HostName.first_or_new(:address => host)
+      )
+    end"
+[s]Ronin::EmailAddress,from,Arg,email,String,[ to_s: () -> String ],T,Twin,"def self.from(email)
+      email = case email
+              when URI::MailTo then email.to
+              else                  email.to_s
+              end
+
+      return parse(email)
+    end"
+[s]Ronin::EmailAddress,from,Ret,"",(false or true),EmailAddress,T,Constraints,"def self.from(email)
+      email = case email
+              when URI::MailTo then email.to
+              else                  email.to_s
+              end
+
+      return parse(email)
+    end"
+Ronin::EmailAddress,user,Ret,"",String,String,E,Twin,"def user
+      self.user_name.name if self.user_name
+    end"
+Ronin::EmailAddress,host,Ret,"",String,String,E,Twin,"def host
+      self.host_name.address if self.host_name
+    end"
+Ronin::EmailAddress,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      ""#{self.user_name}@#{self.host_name}""
+    end"
+Ronin::EmailAddress,inspect,Ret,"",String,String,E,Constraints,"def inspect
+      ""#<#{self.class}: #{self}>""
+    end"
+[s]Ronin::HostName,extract,Arg,text,String,String,E,Twin,"def self.extract(text)
+      return enum_for(__method__,text).to_a unless block_given?
+
+      scanner = StringScanner.new(text)
+
+      while scanner.skip_until(Regexp::HOST_NAME)
+        yield parse(scanner.matched)
+      end
+
+      return nil
+    end"
+[s]Ronin::HostName,extract,Ret,"",Array<%any>,Array<HostName>,P,Constraints,"def self.extract(text)
+      return enum_for(__method__,text).to_a unless block_given?
+
+      scanner = StringScanner.new(text)
+
+      while scanner.skip_until(Regexp::HOST_NAME)
+        yield parse(scanner.matched)
+      end
+
+      return nil
+    end"
+[s]Ronin::HostName,with_ips,Arg,ips,{ [s]Ronin::HostName#with_ips arg: ips },(Array<String> or String),N,,"def self.with_ips(ips)
+      all('ip_addresses.address' => ips)
+    end"
+[s]Ronin::HostName,with_ips,Ret,"",Array<URL>,Array<HostName>,P,Twin,"def self.with_ips(ips)
+      all('ip_addresses.address' => ips)
+    end"
+[s]Ronin::HostName,with_ports,Arg,numbers,{ [s]Ronin::HostName#with_ports arg: numbers },(Array<Number> or Number),N,,"def self.with_ports(numbers)
+      all('ports.number' => numbers)
+    end"
+[s]Ronin::HostName,with_ports,Ret,"",Array<URL>,Array<HostName>,P,Twin,"def self.with_ports(numbers)
+      all('ports.number' => numbers)
+    end"
+[s]Ronin::HostName,tld,Arg,name,String,String,E,Twin,"def self.tld(name)
+      all(:address.like => ""%.#{name}"")
+    end"
+[s]Ronin::HostName,tld,Ret,"",Array<URL>,Array<HostName>,P,Twin,"def self.tld(name)
+      all(:address.like => ""%.#{name}"")
+    end"
+[s]Ronin::HostName,domain,Arg,name,String,String,E,Twin,"def self.domain(name)
+      all(:address.like => ""#{name}.%"") |
+      all(:address.like => ""%.#{name}.%"")
+    end"
+[s]Ronin::HostName,domain,Ret,"",{ [s]Ronin::HostName#domain ret: ret },Array<HostName>,N,,"def self.domain(name)
+      all(:address.like => ""#{name}.%"") |
+      all(:address.like => ""%.#{name}.%"")
+    end"
+[s]Ronin::HostName,lookup,Arg,addr,String,(IPAddr or String),T,Twin,"def self.lookup(addr,nameserver=nil)
+      addr = addr.to_s
+      ip = IPAddress.first_or_new(:address => addr)
+
+      resolver = Resolv.resolver(nameserver)
+      hosts = begin
+                resolver.getnames(addr)
+              rescue
+                []
+              end
+
+      hosts.map! do |name|
+        HostName.first_or_create(
+          :address => name,
+          :ip_addresses => [ip]
+        )
+      end
+
+      return hosts
+    end"
+[s]Ronin::HostName,lookup,Arg,nameserver,?{ [s]Ronin::HostName#lookup arg: nameserver },String,N,,"def self.lookup(addr,nameserver=nil)
+      addr = addr.to_s
+      ip = IPAddress.first_or_new(:address => addr)
+
+      resolver = Resolv.resolver(nameserver)
+      hosts = begin
+                resolver.getnames(addr)
+              rescue
+                []
+              end
+
+      hosts.map! do |name|
+        HostName.first_or_create(
+          :address => name,
+          :ip_addresses => [ip]
+        )
+      end
+
+      return hosts
+    end"
+[s]Ronin::HostName,lookup,Ret,"",Array<{ [s]Ronin::HostName#lookup array_param: array_param_#<Parser::Source::Map::Collection:0x00007f92a06ee760> }>,Array<HostName>,P,Constraints,"def self.lookup(addr,nameserver=nil)
+      addr = addr.to_s
+      ip = IPAddress.first_or_new(:address => addr)
+
+      resolver = Resolv.resolver(nameserver)
+      hosts = begin
+                resolver.getnames(addr)
+              rescue
+                []
+              end
+
+      hosts.map! do |name|
+        HostName.first_or_create(
+          :address => name,
+          :ip_addresses => [ip]
+        )
+      end
+
+      return hosts
+    end"
+Ronin::HostName,lookup!,Arg,nameserver,?{ Ronin::HostName#lookup! arg: nameserver },String,N,,"def lookup!(nameserver=nil)
+      resolver = Resolv.resolver(nameserver)
+      ips = begin
+              resolver.getaddresses(self.address)
+            rescue
+              []
+            end
+
+      ips.map! do |addr|
+        IPAddress.first_or_create(
+          :address => addr,
+          :host_names => [self]
+        )
+      end
+
+      return ips
+    end"
+Ronin::HostName,lookup!,Ret,"",Array<{ Ronin::HostName#lookup! array_param: array_param_#<Parser::Source::Map::Collection:0x00007f929b1cd178> }>,Array<IPAddress>,P,Constraints,"def lookup!(nameserver=nil)
+      resolver = Resolv.resolver(nameserver)
+      ips = begin
+              resolver.getaddresses(self.address)
+            rescue
+              []
+            end
+
+      ips.map! do |addr|
+        IPAddress.first_or_create(
+          :address => addr,
+          :host_names => [self]
+        )
+      end
+
+      return ips
+    end"
+Ronin::HostName,recent_ip_address,Ret,"",Array<URL>,IpAddress,T,Twin,"def recent_ip_address
+      self.host_name_ip_addresses.all(
+        :order => [:created_at.desc]
+      ).ip_addresses.first
+    end"
+Ronin::HostName,last_scanned_at,Ret,"",String,Time,T,Twin,"def last_scanned_at
+      last_scanned_url = self.urls.first(
+        :order => [:last_scanned_at.desc]
+      )
+
+      return last_scanned_url.last_scanned_at if last_scanned_url
+    end"
+[s]Ronin::Installation,gems,Ret,"",{ [s]Ronin::Installation#gems ret: ret },"Hash<String, Gem::Specification>",N,,"def self.gems
+      load! if @gems.empty?
+      return @gems
+    end"
+[s]Ronin::Installation,paths,Ret,"",Array<String>,Set<String>,T,Constraints,"def self.paths
+      load! if @paths.empty?
+      return @paths
+    end"
+[s]Ronin::Installation,libraries,Ret,"",{ [s]Ronin::Installation#libraries ret: ret },Array<String>,N,,"def self.libraries
+      gems.keys
+    end"
+[s]Ronin::Installation,each_file,Arg,pattern,(Array<String> or File or [ to_str: () -> String ]),String,T,Constraints,"def self.each_file(pattern)
+      return enum_for(__method__,pattern) unless block_given?
+
+      # query the installed gems
+      paths.each do |gem_path|
+        slice_index = gem_path.length + 1
+
+        Dir.glob(File.join(gem_path,pattern)) do |path|
+          yield path[slice_index..-1]
+        end
+      end
+
+      return nil
+    end"
+[s]Ronin::Installation,each_file,Ret,"",Enumerator<%any>,Enumerator,P,Constraints,"def self.each_file(pattern)
+      return enum_for(__method__,pattern) unless block_given?
+
+      # query the installed gems
+      paths.each do |gem_path|
+        slice_index = gem_path.length + 1
+
+        Dir.glob(File.join(gem_path,pattern)) do |path|
+          yield path[slice_index..-1]
+        end
+      end
+
+      return nil
+    end"
+[s]Ronin::Installation,each_file_in,Arg,directory,String,String,E,Twin,"def self.each_file_in(directory,ext=nil)
+      return enum_for(__method__,directory,ext) unless block_given?
+
+      directory = File.join(directory,File::SEPARATOR)
+
+      pattern = File.join(directory,'**','*')
+      pattern << "".#{ext}"" if ext
+
+      each_file(pattern) do |path|
+        yield path.sub(directory,'')
+      end
+    end"
+[s]Ronin::Installation,each_file_in,Arg,ext,?String,(String or Symbol),E,Constraints,"def self.each_file_in(directory,ext=nil)
+      return enum_for(__method__,directory,ext) unless block_given?
+
+      directory = File.join(directory,File::SEPARATOR)
+
+      pattern = File.join(directory,'**','*')
+      pattern << "".#{ext}"" if ext
+
+      each_file(pattern) do |path|
+        yield path.sub(directory,'')
+      end
+    end"
+[s]Ronin::Installation,each_file_in,Ret,"",Enumerator<%any>,Enumerator,P,Constraints,"def self.each_file_in(directory,ext=nil)
+      return enum_for(__method__,directory,ext) unless block_given?
+
+      directory = File.join(directory,File::SEPARATOR)
+
+      pattern = File.join(directory,'**','*')
+      pattern << "".#{ext}"" if ext
+
+      each_file(pattern) do |path|
+        yield path.sub(directory,'')
+      end
+    end"
+[s]Ronin::Installation,load_gems!,Ret,"",(false or true),(false or true),E,Constraints,"def self.load_gems!
+      register_gem = lambda { |gem|
+        @gems[gem.name] = gem
+        @paths << gem.full_gem_path
+      }
+
+      ronin_gem = Gem.loaded_specs['ronin']
+
+      # add the main ronin gem
+      register_gem[ronin_gem]
+
+      # add any dependent gems
+      ronin_gem.dependent_gems.each do |gems|
+        register_gem[gems[0]]
+      end
+
+      return true
+    end"
+[s]Ronin::Installation,load_gemspecs!,Ret,"",(false or true),(false or true),E,Constraints,"def self.load_gemspecs!
+      $LOAD_PATH.each do |lib_dir|
+        root_dir = File.expand_path(File.join(lib_dir,'..'))
+        gemspec_path = Dir[File.join(root_dir,'ronin*.gemspec')][0]
+
+        if gemspec_path
+          # switch into the gem directory, before loading the gemspec
+          gem = RDL.type_cast(Dir.chdir(root_dir) do
+            Gem::Specification.load(gemspec_path)
+          end, ""Gem::Specification"")
+
+          # do not add duplicate ronin gems
+          unless @gems.has_key?(gem.name)
+            @gems[gem.name] = gem
+            @paths << root_dir
+          end
+        end
+      end
+
+      return true
+    end"
+[s]Ronin::Installation,load!,Ret,"",(false or true),(false or true),E,Constraints,"def self.load!
+      if Gem.loaded_specs.has_key?('ronin') then load_gems!
+      else                                       load_gemspecs!
+      end
+    end"
+[s]Ronin::IPAddress,extract,Arg,text,String,String,E,Twin,"def self.extract(text,version=nil)
+      return enum_for(__method__,text,version).to_a unless block_given?
+
+      IPAddr.extract(text,version) do |ip|
+        yield parse(ip)
+      end
+
+      return nil
+    end"
+[s]Ronin::IPAddress,extract,Arg,version,?String,(Number or Symbol),T,Constraints,"def self.extract(text,version=nil)
+      return enum_for(__method__,text,version).to_a unless block_given?
+
+      IPAddr.extract(text,version) do |ip|
+        yield parse(ip)
+      end
+
+      return nil
+    end"
+[s]Ronin::IPAddress,v4,Ret,"",Array<URL>,Array<IPAddress>,P,Twin,"def self.v4
+      all(:version => 4)
+    end"
+[s]Ronin::IPAddress,v6,Ret,"",Array<URL>,Array<IPAddress>,P,Twin,"def self.v6
+      all(:version => 6)
+    end"
+[s]Ronin::IPAddress,with_macs,Arg,macs,{ [s]Ronin::IPAddress#with_macs arg: macs },(Array<String> or String),N,,"def self.with_macs(macs)
+      all('mac_addresses.address' => macs)
+    end"
+[s]Ronin::IPAddress,with_macs,Ret,"",Array<URL>,Array<IPAddress>,P,Twin,"def self.with_macs(macs)
+      all('mac_addresses.address' => macs)
+    end"
+[s]Ronin::IPAddress,with_hosts,Arg,names,{ [s]Ronin::IPAddress#with_hosts arg: names },(Array<String> or String),N,,"def self.with_hosts(names)
+      all('host_names.address' => names)
+    end"
+[s]Ronin::IPAddress,with_hosts,Ret,"",Array<URL>,Array<IPAddress>,P,Twin,"def self.with_hosts(names)
+      all('host_names.address' => names)
+    end"
+[s]Ronin::IPAddress,with_ports,Arg,numbers,{ [s]Ronin::IPAddress#with_ports arg: numbers },(Array<Number> or Number),N,,"def self.with_ports(numbers)
+      all('ports.number' => numbers)
+    end"
+[s]Ronin::IPAddress,with_ports,Ret,"",Array<URL>,Array<IPAddress>,P,Twin,"def self.with_ports(numbers)
+      all('ports.number' => numbers)
+    end"
+[s]Ronin::IPAddress,lookup,Arg,name,String,String,E,Twin,"def self.lookup(name,nameserver=nil)
+      host = HostName.first_or_new(:address => name)
+      resolver = Resolv.resolver(nameserver)
+
+      ips = begin
+              resolver.getaddresses(name)
+            rescue
+              []
+            end
+        
+      ips.map! do |addr|
+        IPAddress.first_or_create(
+          :address => addr,
+          :host_names => [host]
+        )
+      end
+
+      return ips
+    end"
+[s]Ronin::IPAddress,lookup,Arg,nameserver,?{ [s]Ronin::IPAddress#lookup arg: nameserver },String,N,,"def self.lookup(name,nameserver=nil)
+      host = HostName.first_or_new(:address => name)
+      resolver = Resolv.resolver(nameserver)
+
+      ips = begin
+              resolver.getaddresses(name)
+            rescue
+              []
+            end
+        
+      ips.map! do |addr|
+        IPAddress.first_or_create(
+          :address => addr,
+          :host_names => [host]
+        )
+      end
+
+      return ips
+    end"
+[s]Ronin::IPAddress,lookup,Ret,"",Array<{ [s]Ronin::IPAddress#lookup array_param: array_param_#<Parser::Source::Map::Collection:0x00007f929f089588> }>,Array<IPAddress>,P,Constraints,"def self.lookup(name,nameserver=nil)
+      host = HostName.first_or_new(:address => name)
+      resolver = Resolv.resolver(nameserver)
+
+      ips = begin
+              resolver.getaddresses(name)
+            rescue
+              []
+            end
+        
+      ips.map! do |addr|
+        IPAddress.first_or_create(
+          :address => addr,
+          :host_names => [host]
+        )
+      end
+
+      return ips
+    end"
+Ronin::IPAddress,lookup!,Arg,nameserver,?{ Ronin::IPAddress#lookup! arg: nameserver },String,N,,"def lookup!(nameserver=nil)
+      resolver = Resolv.resolver(nameserver)
+      hosts = begin
+                resolver.getnames(self.address.to_s)
+              rescue
+                []
+              end
+
+      hosts.map! do |name|
+        HostName.first_or_create(
+          :address => name,
+          :ip_addresses => [self]
+        )
+      end
+
+      return hosts
+    end"
+Ronin::IPAddress,lookup!,Ret,"",Array<{ Ronin::IPAddress#lookup! array_param: array_param_#<Parser::Source::Map::Collection:0x00007f92a020b950> }>,Array<HostName>,P,Constraints,"def lookup!(nameserver=nil)
+      resolver = Resolv.resolver(nameserver)
+      hosts = begin
+                resolver.getnames(self.address.to_s)
+              rescue
+                []
+              end
+
+      hosts.map! do |name|
+        HostName.first_or_create(
+          :address => name,
+          :ip_addresses => [self]
+        )
+      end
+
+      return hosts
+    end"
+Ronin::IPAddress,recent_mac_address,Ret,"",Array<URL>,MacAddress,T,Twin,"def recent_mac_address
+      self.ip_address_mac_addresses.all(
+        :order => [:created_at.desc]
+      ).mac_addresses.first
+    end"
+Ronin::IPAddress,recent_host_name,Ret,"",Array<URL>,HostName,T,Twin,"def recent_host_name
+      self.host_name_ip_addresses.all(
+        :order => [:created_at.desc]
+      ).host_names.first
+    end"
+Ronin::IPAddress,recent_os_guess,Ret,"",Array<URL>,OS,T,Twin,"def recent_os_guess
+      self.os_guesses.all(:order => [:created_at.desc]).oses.first
+    end"
+Ronin::IPAddress,last_scanned_at,Ret,"",String,Time,T,Twin,"def last_scanned_at
+      last_scanned_port = self.open_ports.first(
+        :order => [:last_scanned_at.desc]
+      )
+
+      return last_scanned_port.last_scanned_at if last_scanned_port
+    end"
+Ronin::IPAddress,to_ip,Ret,"",String,IPAddr,T,Twin,"def to_ip
+      self.address
+    end"
+Ronin::IPAddress,to_i,Ret,"",Number,Number,E,Constraints,"def to_i
+      self.address.to_i
+    end"
+[s]Ronin::MACAddress,extract,Arg,text,String,String,E,Twin,"def self.extract(text)
+      return enum_for(__method__,text).to_a unless block_given?
+
+      scanner = StringScanner.new(text)
+
+      while scanner.skip_until(Regexp::MAC)
+        yield parse(scanner.matched)
+      end
+
+      return nil
+    end"
+[s]Ronin::MACAddress,extract,Ret,"",Array<%any>,Array<MACAddress>,P,Constraints,"def self.extract(text)
+      return enum_for(__method__,text).to_a unless block_given?
+
+      scanner = StringScanner.new(text)
+
+      while scanner.skip_until(Regexp::MAC)
+        yield parse(scanner.matched)
+      end
+
+      return nil
+    end"
+Ronin::MACAddress,recent_ip_address,Ret,"",Array<URL>,IpAddress,T,Twin,"def recent_ip_address
+      self.ip_address_mac_addresses.all(
+        :order => [:created_at.desc]
+      ).ip_addresses.first
+    end"
+Ronin::MACAddress,to_i,Ret,"",String,Number,T,Twin,"def to_i
+      self.address.split(':').inject(0) do |bits,char|
+        bits = ((bits << 8) | char.hex)
+      end
+    end"
+Ronin::OpenPort,address,Ret,"",String,String,E,Twin,"def address
+      self.ip_address.address
+    end"
+Ronin::OpenPort,number,Ret,"",String,Number,T,Twin,"def number
+      self.port.number
+    end"
+Ronin::OpenPort,to_i,Ret,"",Number,Number,E,Constraints,"def to_i
+      self.port.to_i
+    end"
+Ronin::OpenPort,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      if self.service then ""#{self.port} (#{self.service})""
+      else                 ""#{self.port}""
+      end
+    end"
+Ronin::OS,recent_ip_address,Ret,"",String,IPAddress,T,Twin,"def recent_ip_address
+      relation = self.os_guesses.first(:order => [:created_at.desc])
+
+      if relation
+        return relation.ip_address
+      end
+    end"
+Ronin::OS,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      if self.version then ""#{self.name} #{self.version}""
+      else                 super
+      end
+    end"
+[s]Ronin::Password,parse,Arg,password,[ to_s: () -> String ],[ to_s: () -> String ],E,Constraints,"def self.parse(password)
+      first_or_new(:clear_text => password.to_s)
+    end"
+[s]Ronin::Password,parse,Ret,"",Ronin::Script::Testable,Password,T,Twin,"def self.parse(password)
+      first_or_new(:clear_text => password.to_s)
+    end"
+Ronin::Password,digest,Arg,algorithm,String,(String or Symbol),E,Twin,"def digest(algorithm,options={})
+      digest_class = begin
+                       Digest.const_get(algorithm.to_s.upcase)
+                     rescue LoadError
+                       raise(ArgumentError,""Unknown Digest algorithm #{algorithm}"")
+                     end
+
+      hash = RDL.type_cast(digest_class, ""Class"").new
+
+      if options[:prepend_salt]
+        hash << options[:prepend_salt].to_s
+      end
+
+      hash << self.clear_text
+
+      if options[:append_salt]
+        hash << options[:append_salt].to_s
+      end
+
+      return hash.hexdigest
+    end"
+Ronin::Password,digest,Arg,options,?([ []: (:append_salt) -> { { Ronin::Password#digest arg: options }#[] call_ret: ret } ] and [ []: (:prepend_salt) -> { { Ronin::Password#digest arg: options }#[] call_ret: ret } ]),Hash,TS,Constraints,"def digest(algorithm,options={})
+      digest_class = begin
+                       Digest.const_get(algorithm.to_s.upcase)
+                     rescue LoadError
+                       raise(ArgumentError,""Unknown Digest algorithm #{algorithm}"")
+                     end
+
+      hash = RDL.type_cast(digest_class, ""Class"").new
+
+      if options[:prepend_salt]
+        hash << options[:prepend_salt].to_s
+      end
+
+      hash << self.clear_text
+
+      if options[:append_salt]
+        hash << options[:append_salt].to_s
+      end
+
+      return hash.hexdigest
+    end"
+Ronin::Password,digest,Ret,"",String,String,E,Twin,"def digest(algorithm,options={})
+      digest_class = begin
+                       Digest.const_get(algorithm.to_s.upcase)
+                     rescue LoadError
+                       raise(ArgumentError,""Unknown Digest algorithm #{algorithm}"")
+                     end
+
+      hash = RDL.type_cast(digest_class, ""Class"").new
+
+      if options[:prepend_salt]
+        hash << options[:prepend_salt].to_s
+      end
+
+      hash << self.clear_text
+
+      if options[:append_salt]
+        hash << options[:append_salt].to_s
+      end
+
+      return hash.hexdigest
+    end"
+Ronin::Password,count,Ret,"",String,Number,T,Twin,"def count
+      self.credentials.count
+    end"
+Ronin::Password,to_s,Ret,"",String,String,E,Twin,"def to_s
+      self.clear_text
+    end"
+Ronin::Password,inspect,Ret,"",String,String,E,Constraints,"def inspect
+      ""#<#{self.class}: #{self.clear_text}>""
+    end"
+[s]Ronin::Port,from,Arg,number,{ [s]Ronin::Port#from arg: number },(Number or String),N,,"def self.from(number)
+      first_or_new(:number => number)
+    end"
+[s]Ronin::Port,from,Ret,"",Ronin::Script::Testable,Port,T,Twin,"def self.from(number)
+      first_or_new(:number => number)
+    end"
+[s]Ronin::Port,parse,Arg,number,String,(Number or String),T,Twin,"def self.parse(number)
+      from(number.to_i)
+    end"
+[s]Ronin::Port,parse,Ret,"",Ronin::Script::Testable,Port,T,Constraints,"def self.parse(number)
+      from(number.to_i)
+    end"
+Ronin::Port,to_i,Ret,"",Number,Number,E,Constraints,"def to_i
+      self.number.to_i
+    end"
+Ronin::Port,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      ""#{self.number}/#{self.protocol}""
+    end"
+Ronin::Port,inspect,Ret,"",String,String,E,Constraints,"def inspect
+      ""#<#{self.class}: #{self}>""
+    end"
+[s]Ronin::Repository,find,Arg,name,String,String,E,Twin,"def Repository.find(name)
+      name, domain = name.to_s.split('@',2)
+
+      query = {:name => name}
+      query[:domain] = domain if domain
+
+      unless (repo = Repository.first(query))
+        if domain
+          raise(RepositoryNotFound,""Repository #{name.dump} from domain #{domain.dump} cannot be found"")
+        else
+          raise(RepositoryNotFound,""Repository #{name.dump} cannot be found"")
+        end
+      end
+
+      return repo
+    end"
+[s]Ronin::Repository,find,Ret,"",{ [s]Ronin::Repository#find ret: ret },Repository,N,,"def Repository.find(name)
+      name, domain = name.to_s.split('@',2)
+
+      query = {:name => name}
+      query[:domain] = domain if domain
+
+      unless (repo = Repository.first(query))
+        if domain
+          raise(RepositoryNotFound,""Repository #{name.dump} from domain #{domain.dump} cannot be found"")
+        else
+          raise(RepositoryNotFound,""Repository #{name.dump} cannot be found"")
+        end
+      end
+
+      return repo
+    end"
+[s]Ronin::Repository,add,Ret,"",Ronin::Repository,Repository,E,Constraints,"def Repository.add(options={})
+      unless options.has_key?(:path)
+        raise(ArgumentError,""the :path option was not given"")
+      end
+
+      path = Pathname.new(options[:path]).expand_path
+
+      unless path.directory?
+        raise(RepositoryNotFound,""Repository #{path} cannot be found"")
+      end
+
+      if Repository.count(:path => path) > 0
+        raise(DuplicateRepository,""a Repository at the path #{path} was already added"")
+      end
+
+      # create the repository
+      repo = Repository.new(options.merge(
+        :path      => path,
+        :installed => false,
+        :domain    => LOCAL_DOMAIN
+      ))
+
+      if Repository.count(:name => repo.name, :domain => repo.domain) > 0
+        raise(DuplicateRepository,""the Repository #{repo} already exists in the database"")
+      end
+
+      # save the repository
+      if repo.save
+        # cache any files from within the `cache/` directory of the
+        # repository
+        repo.cache_scripts!
+      end
+
+      return repo
+    end"
+[s]Ronin::Repository,install,Arg,options,?[ []: (:uri) -> { { [s]Ronin::Repository#install arg: options }#[] call_ret: ret } ],Hash,TS,Constraints,"def Repository.install(options={})
+      unless options[:uri]
+        raise(ArgumentError,"":uri must be passed to Repository.install"")
+      end
+
+      remote_repo = Pullr::RemoteRepository.new(options)
+
+      name   = remote_repo.name
+      domain = if remote_repo.uri.scheme
+                 remote_repo.uri.host
+               else
+                 # Use a regexp to pull out the host-name, if the URI
+                 # lacks a scheme.
+                 remote_repo.uri.to_s.match(/\@([^@:\/]+)/)[1]
+               end
+
+      if Repository.count(:name => name, :domain => domain) > 0
+        raise(DuplicateRepository,""a Repository already exists with the name #{name.dump} from domain #{domain.dump}"")
+      end
+
+      path = File.join(Config::REPOS_DIR,name,domain)
+
+      # pull down the remote repository
+      local_repo = remote_repo.pull(path)
+
+      # add the new remote repository
+      repo = Repository.new(
+        :path      => path,
+        :scm       => local_repo.scm,
+        :uri       => remote_repo.uri,
+        :installed => true,
+        :name      => name,
+        :domain    => domain
+      )
+
+      # save the repository 
+      if repo.save
+        # cache any files from within the `cache/` directory of the
+        # repository
+        repo.cache_scripts!
+      end
+
+      return repo
+    end"
+[s]Ronin::Repository,install,Ret,"",Ronin::Repository,Repository,E,Constraints,"def Repository.install(options={})
+      unless options[:uri]
+        raise(ArgumentError,"":uri must be passed to Repository.install"")
+      end
+
+      remote_repo = Pullr::RemoteRepository.new(options)
+
+      name   = remote_repo.name
+      domain = if remote_repo.uri.scheme
+                 remote_repo.uri.host
+               else
+                 # Use a regexp to pull out the host-name, if the URI
+                 # lacks a scheme.
+                 remote_repo.uri.to_s.match(/\@([^@:\/]+)/)[1]
+               end
+
+      if Repository.count(:name => name, :domain => domain) > 0
+        raise(DuplicateRepository,""a Repository already exists with the name #{name.dump} from domain #{domain.dump}"")
+      end
+
+      path = File.join(Config::REPOS_DIR,name,domain)
+
+      # pull down the remote repository
+      local_repo = remote_repo.pull(path)
+
+      # add the new remote repository
+      repo = Repository.new(
+        :path      => path,
+        :scm       => local_repo.scm,
+        :uri       => remote_repo.uri,
+        :installed => true,
+        :name      => name,
+        :domain    => domain
+      )
+
+      # save the repository 
+      if repo.save
+        # cache any files from within the `cache/` directory of the
+        # repository
+        repo.cache_scripts!
+      end
+
+      return repo
+    end"
+[s]Ronin::Repository,uninstall,Arg,name,String,String,E,Constraints,"def Repository.uninstall(name)
+      Repository.find(name).uninstall!
+    end"
+[s]Ronin::Repository,uninstall,Ret,"",Ronin::Script::Testable,nil,T,Twin,"def Repository.uninstall(name)
+      Repository.find(name).uninstall!
+    end"
+[s]Ronin::Repository,activate!,Ret,"",Enumerator<t>,Array<Repository>,T,Twin,"def Repository.activate!
+      Repository.each { |repo| repo.activate! }
+    end"
+[s]Ronin::Repository,deactivate!,Ret,"",Enumerator<t>,Array<Repository>,T,Constraints,"def Repository.deactivate!
+      Repository.reverse_each { |repo| repo.deactivate! }
+    end"
+Ronin::Repository,local?,Ret,"",(false or true),(false or true),E,Constraints,"def local?
+      self.domain == LOCAL_DOMAIN
+    end"
+Ronin::Repository,remote?,Ret,"",(false or true),(false or true),E,Twin,"def remote?
+      self.domain != LOCAL_DOMAIN
+    end"
+Ronin::Repository,executables,Ret,"",Array<String>,Array<String>,E,Constraints,"def executables
+      scripts = []
+
+      if @bin_dir.directory?
+        @bin_dir.entries.each do |path|
+          scripts << path.basename.to_s if path.file?
+        end
+      end
+
+      return scripts
+    end"
+Ronin::Repository,each_script,Ret,"",Enumerator<%any>,Enumerator,P,Constraints,"def each_script(&block)
+      return enum_for(__method__) unless block
+
+      @script_dirs.each do |dir|
+        Pathname.glob(dir.join('**','*.rb'),&block)
+      end
+    end"
+Ronin::Repository,activated?,Ret,"",(false or true),(false or true),E,Constraints,"def activated?
+      @activated == true
+    end"
+Ronin::Repository,find_script,Arg,sub_path,(Array<String> or File or [ to_str: () -> String ]),String,T,Constraints,"def find_script(sub_path)
+      paths = @script_dirs.map { |dir| File.join(dir,sub_path) }
+
+      return script_paths.first(:path => paths)
+    end"
+Ronin::Repository,find_script,Ret,"",String,Script::Path,T,Twin,"def find_script(sub_path)
+      paths = @script_dirs.map { |dir| File.join(dir,sub_path) }
+
+      return script_paths.first(:path => paths)
+    end"
+Ronin::Repository,cache_scripts!,Ret,"",Ronin::Repository,Repository,E,Constraints,"def cache_scripts!
+      clean_scripts!
+
+      each_script do |path|
+        self.script_paths.new(:path => path).cache
+      end
+
+      return self
+    end"
+Ronin::Repository,sync_scripts!,Ret,"",Ronin::Repository,Repository,E,Constraints,"def sync_scripts!
+      # activates the repository before caching it's objects
+      activate!
+
+      new_paths = each_script.to_a
+
+      self.script_paths.each do |script_path|
+        # filter out pre-existing paths within the `cached/` directory
+        new_paths.delete(script_path.path)
+
+        # sync the cached file and catch any exceptions
+        script_path.sync
+      end
+
+      # cache the new paths within the `cache/` directory
+      new_paths.each do |path|
+        self.script_paths.new(:path => path).cache
+      end
+
+      # deactivates the repository
+      deactivate!
+      return self
+    end"
+Ronin::Repository,clean_scripts!,Ret,"",Ronin::Repository,Repository,E,Constraints,"def clean_scripts!
+      self.script_paths.destroy
+      self.script_paths.clear
+      return self
+    end"
+Ronin::Repository,update!,Ret,"",Ronin::Repository,Repository,E,Constraints,"def update!
+      local_repo = Pullr::LocalRepository.new(
+        :path => self.path,
+        :scm  => self.scm
+      )
+
+      # only update if we have a repository
+      local_repo.update(self.uri)
+
+      # re-initialize the metadata
+      initialize_metadata
+
+      # save the repository
+      if save
+        # syncs the cached files of the repository
+        sync_scripts!
+      end
+
+      yield self if block_given?
+      return self
+    end"
+Ronin::Repository,uninstall!,Ret,"",Ronin::Repository,Repository,E,Constraints,"def uninstall!
+      deactivate!
+
+      FileUtils.rm_rf(self.path) if self.installed?
+
+      # destroy any cached files first
+      clean_scripts!
+
+      # remove the repository from the database
+      destroy if saved?
+
+      yield self if block_given?
+      return self
+    end"
+Ronin::Repository,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      ""#{self.name}/#{self.domain}""
+    end"
+Ronin,script,Arg,path,String,String,E,Twin,"def script(path)
+    Script.load_from(path)
+  end"
+Ronin,script,Ret,"",Ronin::Script::Testable,Script,T,Twin,"def script(path)
+    Script.load_from(path)
+  end"
+Ronin::Software,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      [self.vendor, self.name, self.version].compact.join(' ')
+    end"
+Ronin::Target,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      self.address.to_s
+    end"
+[s]Ronin::URL,extract,Arg,text,String,String,E,Constraints,"def self.extract(text)
+      return enum_for(__method__,text).to_a unless block_given?
+
+      ::URI.extract(text) do |uri|
+        uri = begin
+                ::URI.parse(RDL.type_cast(uri, ""String""))
+              rescue URI::InvalidURIError
+                # URI.extract can parse URIs that URI.parse cannot handle
+                next
+              end
+
+        yield from(RDL.type_cast(uri, ""URI::HTTP""))
+      end
+
+      return nil
+    end"
+[s]Ronin::URL,extract,Ret,"",Array<%any>,Array<URL>,P,Constraints,"def self.extract(text)
+      return enum_for(__method__,text).to_a unless block_given?
+
+      ::URI.extract(text) do |uri|
+        uri = begin
+                ::URI.parse(RDL.type_cast(uri, ""String""))
+              rescue URI::InvalidURIError
+                # URI.extract can parse URIs that URI.parse cannot handle
+                next
+              end
+
+        yield from(RDL.type_cast(uri, ""URI::HTTP""))
+      end
+
+      return nil
+    end"
+[s]Ronin::URL,http,Ret,"",Array<URL>,Array<URL>,E,Twin,"def self.http
+      all('scheme.name' => 'http')
+    end"
+[s]Ronin::URL,https,Ret,"",Array<URL>,Array<URL>,E,Twin,"def self.https
+      all('scheme.name' => 'https')
+    end"
+[s]Ronin::URL,hosts,Arg,names,{ [s]Ronin::URL#hosts arg: names },(Array<String> or String),N,,"def self.hosts(names)
+      all('host.address' => names)
+    end"
+[s]Ronin::URL,hosts,Ret,"",Array<URL>,Array<URL>,E,Twin,"def self.hosts(names)
+      all('host.address' => names)
+    end"
+[s]Ronin::URL,ports,Arg,numbers,{ [s]Ronin::URL#ports arg: numbers },(Array<Number> or Number),N,,"def self.ports(numbers)
+      all('port.number' => numbers)
+    end"
+[s]Ronin::URL,ports,Ret,"",Array<URL>,Array<URL>,E,Twin,"def self.ports(numbers)
+      all('port.number' => numbers)
+    end"
+[s]Ronin::URL,directory,Arg,root_dir,String,String,E,Twin,"def self.directory(root_dir)
+      all(:path => root_dir) | all(:path.like => ""#{root_dir}/%"")
+    end"
+[s]Ronin::URL,directory,Ret,"",Array<URL>,Array<URL>,E,Twin,"def self.directory(root_dir)
+      all(:path => root_dir) | all(:path.like => ""#{root_dir}/%"")
+    end"
+[s]Ronin::URL,extension,Arg,ext,String,String,E,Twin,"def self.extension(ext)
+      RDL.type_cast(all(:path => ""%.#{ext}""), ""Array<URL>"")
+    end"
+[s]Ronin::URL,extension,Ret,"",Array<URL>,Array<URL>,E,Constraints,"def self.extension(ext)
+      RDL.type_cast(all(:path => ""%.#{ext}""), ""Array<URL>"")
+    end"
+[s]Ronin::URL,with_query_param,Arg,name,String,(Array<String> or String),T,Twin,"def self.with_query_param(name)
+      all('query_params.name.name' => name)
+    end"
+[s]Ronin::URL,with_query_param,Ret,"",Array<URL>,Array<URL>,E,Twin,"def self.with_query_param(name)
+      all('query_params.name.name' => name)
+    end"
+[s]Ronin::URL,with_query_value,Arg,value,String,(Array<String> or String),T,Twin,"def self.with_query_value(value)
+      all('query_params.value' => value)
+    end"
+[s]Ronin::URL,with_query_value,Ret,"",Array<URL>,Array<URL>,E,Twin,"def self.with_query_value(value)
+      all('query_params.value' => value)
+    end"
+[s]Ronin::URL,from,Arg,uri,([ fragment: () -> { { [s]Ronin::URL#from arg: uri }#fragment call_ret: ret } ] and [ host: () -> { { [s]Ronin::URL#from arg: uri }#host call_ret: ret } ] and [ path: () -> { { [s]Ronin::URL#normalized_path arg: uri }#path call_ret: ret } ] and [ port: () -> { { [s]Ronin::URL#from arg: uri }#port call_ret: ret } ] and [ query_params: () -> { { [s]Ronin::URL#from arg: uri }#query_params call_ret: ret } ] and [ respond_to?: (:query_params) -> { { [s]Ronin::URL#from arg: uri }#respond_to? call_ret: ret } ] and [ scheme: () -> { { [s]Ronin::URL#from arg: uri }#scheme call_ret: ret } ]),URI::HTTP,TS,Constraints,"def self.from(uri)
+      # find or create the URL scheme, host_name and port
+      scheme    = URLScheme.first_or_new(:name => uri.scheme)
+      host_name = HostName.first_or_new(:address => uri.host)
+      port      = if uri.port
+                    TCPPort.first_or_new(:number => uri.port)
+                  end
+
+      path     = normalized_path(uri)
+      fragment = uri.fragment
+
+      query_params = []
+      
+      if uri.respond_to?(:query_params)
+        # find or create the URL query params
+        uri.query_params.each do |name,value|
+          query_params << {
+            :name  => URLQueryParamName.first_or_new(:name => name),
+            :value => value
+          }
+        end
+      end
+
+      # find or create the URL
+      return first_or_new(
+        :scheme       => scheme,
+        :host_name    => host_name,
+        :port         => port,
+        :path         => path,
+        :fragment     => fragment,
+        :query_params => query_params
+      )
+    end"
+[s]Ronin::URL,from,Ret,"",(false or true),URL,T,Twin,"def self.from(uri)
+      # find or create the URL scheme, host_name and port
+      scheme    = URLScheme.first_or_new(:name => uri.scheme)
+      host_name = HostName.first_or_new(:address => uri.host)
+      port      = if uri.port
+                    TCPPort.first_or_new(:number => uri.port)
+                  end
+
+      path     = normalized_path(uri)
+      fragment = uri.fragment
+
+      query_params = []
+      
+      if uri.respond_to?(:query_params)
+        # find or create the URL query params
+        uri.query_params.each do |name,value|
+          query_params << {
+            :name  => URLQueryParamName.first_or_new(:name => name),
+            :value => value
+          }
+        end
+      end
+
+      # find or create the URL
+      return first_or_new(
+        :scheme       => scheme,
+        :host_name    => host_name,
+        :port         => port,
+        :path         => path,
+        :fragment     => fragment,
+        :query_params => query_params
+      )
+    end"
+[s]Ronin::URL,parse,Arg,url,String,String,E,Constraints,"def self.parse(url)
+      from(::URI.parse(url))
+    end"
+[s]Ronin::URL,parse,Ret,"",(false or true),URL,T,Constraints,"def self.parse(url)
+      from(::URI.parse(url))
+    end"
+Ronin::URL,host,Ret,"",String,String,E,Twin,"def host
+      self.host_name.address
+    end"
+Ronin::URL,port_number,Ret,"",nil,Number,T,Constraints,"def port_number
+      self.port.number if self.port
+    end"
+Ronin::URL,query_string,Ret,"",Array<URL>,String,T,Twin,"def query_string
+      params = {}
+
+      self.query_params.each do |param|
+        params[param.name] = param.value
+      end
+
+      return ::URI::QueryParams.dump(params)
+    end"
+Ronin::URL,query_string=,Arg,query,String,String,E,Twin,"def query_string=(query)
+      self.query_params.clear
+
+      ::URI::QueryParams.parse(query).each do |name,value|
+        self.query_params.new(
+          :name  => URLQueryParamName.first_or_new(:name => name),
+          :value => value
+        )
+      end
+
+      return query
+    end"
+Ronin::URL,query_string=,Ret,"",String,String,E,Constraints,"def query_string=(query)
+      self.query_params.clear
+
+      ::URI::QueryParams.parse(query).each do |name,value|
+        self.query_params.new(
+          :name  => URLQueryParamName.first_or_new(:name => name),
+          :value => value
+        )
+      end
+
+      return query
+    end"
+Ronin::URL,to_uri,Ret,"",(false or true),URI::HTTP,T,Twin,"def to_uri
+      # map the URL scheme to a URI class
+      url_class = SCHEMES.fetch(self.scheme.name,::URI::Generic)
+
+      host = if self.host_name
+               self.host_name.address
+             end
+      port = if self.port
+               self.port.number
+             end
+
+      query = unless self.query_params.empty?
+                self.query_string
+              end
+
+      # build the URI
+      return url_class.build(
+        :scheme   => self.scheme.name,
+        :host     => host,
+        :port     => port,
+        :path     => self.path,
+        :query    => query,
+        :fragment => self.fragment
+      )
+    end"
+Ronin::URL,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      self.to_uri.to_s
+    end"
+Ronin::URL,inspect,Ret,"",String,String,E,Constraints,"def inspect
+      ""#<#{self.class}: #{self}>""
+    end"
+[s]Ronin::URL,normalized_path,Arg,uri,[ path: () -> { { [s]Ronin::URL#normalized_path arg: uri }#path call_ret: ret } ],URI,TS,Constraints,"def self.normalized_path(uri)
+      case uri
+      when ::URI::HTTP
+        # map empty HTTP paths to '/'
+        unless uri.path.empty? then uri.path
+        else                        '/'
+        end
+      else
+        uri.path
+      end
+    end"
+[s]Ronin::URL,normalized_path,Ret,"",String,String,E,Constraints,"def self.normalized_path(uri)
+      case uri
+      when ::URI::HTTP
+        # map empty HTTP paths to '/'
+        unless uri.path.empty? then uri.path
+        else                        '/'
+        end
+      else
+        uri.path
+      end
+    end"
+Ronin::URLQueryParam,to_s,Ret,"",String,String,E,Twin,"def to_s
+      URI::QueryParams.dump(self.name.to_s => self.value)
+    end"
+Ronin::URLQueryParam,inspect,Ret,"",String,String,E,Constraints,"def inspect
+      ""#<#{self.class}: #{self}>""
+    end"
+Ronin::URLQueryParamName,created_at,Ret,"",nil,Time,T,Constraints,"def created_at
+      if (url = self.query_params.urls.first(:fields => [:created_at]))
+        url.created_at
+      end
+    end"
+Ronin::URLQueryParamName,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      self.name.to_s
+    end"
+Ronin::URLQueryParamName,inspect,Ret,"",String,String,E,Constraints,"def inspect
+      ""#<#{self.class}: #{self}>""
+    end"
+[s]Ronin::WebCredential,with_email,Arg,email,String,String,E,Twin,"def self.with_email(email)
+      unless email.include?('@')
+        raise(""invalid email address #{email.dump}"")
+      end
+
+      user, domain = email.split('@',2)
+
+      return all(
+        'email_address.user_name.name' => user,
+        'email_address.host_name.address' => domain
+      )
+    end"
+[s]Ronin::WebCredential,with_email,Ret,"",(false or true),Array<WebCredential>,T,Twin,"def self.with_email(email)
+      unless email.include?('@')
+        raise(""invalid email address #{email.dump}"")
+      end
+
+      user, domain = email.split('@',2)
+
+      return all(
+        'email_address.user_name.name' => user,
+        'email_address.host_name.address' => domain
+      )
+    end"
+Ronin::WebCredential,to_s,Ret,"",String,String,E,Constraints,"def to_s
+      if self.email_address then ""#{super} (#{self.email_address})""
+      else                       super
+      end
+    end"
+[s]Ronin::Database,repositories,Ret,"",{ [s]Ronin::Database#repositories ret: ret },"Hash<Symbol, Hash>",N,,"def self.repositories
+      if @repositories.empty?
+        @repositories[:default] = DEFAULT_REPOSITORY
+
+        if File.file?(CONFIG_FILE)
+          config = YAML.load_file(CONFIG_FILE)
+
+          unless config.kind_of?(Hash)
+            raise(InvalidConfig,""#{CONFIG_FILE} must contain a YAML Hash of repositories"")
+          end
+
+          config.each do |name,uri|
+            @repositories[name.to_sym] = uri
+          end
+        end
+      end
+
+      return @repositories
+    end"
+[s]Ronin::Database,repository?,Arg,name,String,(String or Symbol),E,Twin,"def self.repository?(name)
+      repositories.has_key?(name.to_sym)
+    end"
+[s]Ronin::Database,repository?,Ret,"",(false or true),(false or true),E,Twin,"def self.repository?(name)
+      repositories.has_key?(name.to_sym)
+    end"
+[s]Ronin::Database,save,Ret,"",(false or true),(false or true),E,Constraints,"def self.save
+      yield if block_given?
+
+      File.open(CONFIG_FILE,'w') do |file|
+        hash = {}
+        
+        repositories.each do |name,value|
+          hash[name.to_sym] = value
+        end
+
+        YAML.dump(hash,file)
+      end
+
+      return true
+    end"
+[s]Ronin::Database,log,Arg,options,"?([ empty?: () -> { { [s]Ronin::Database#log arg: options }#empty? call_ret: ret } ] and [ fetch: (:level, :info) -> { { [s]Ronin::Database#log arg: options }#fetch call_ret: ret } ] and [ fetch: (:path, String) -> { { [s]Ronin::Database#log arg: options }#fetch call_ret: ret } ] and [ fetch: (:stream, { Class#new ret: ret }) -> { { [s]Ronin::Database#log arg: options }#fetch call_ret: ret } ])",Hash,TS,Constraints,"def self.log(options={})
+      unless (@log && options.empty?)
+        path   = options.fetch(:path,DEFAULT_LOG_PATH)
+        stream = options.fetch(:stream,File.new(path,'w+'))
+        level  = options.fetch(:level,DEFAULT_LOG_LEVEL)
+
+        @log = DataMapper::Logger.new(stream,level)
+      end
+
+      return @log
+    end"
+[s]Ronin::Database,log,Ret,"",DataMapper::Logger,DataMapper::Logger,E,Constraints,"def self.log(options={})
+      unless (@log && options.empty?)
+        path   = options.fetch(:path,DEFAULT_LOG_PATH)
+        stream = options.fetch(:stream,File.new(path,'w+'))
+        level  = options.fetch(:level,DEFAULT_LOG_LEVEL)
+
+        @log = DataMapper::Logger.new(stream,level)
+      end
+
+      return @log
+    end"
+[s]Ronin::Database,upgrade!,Ret,"",(false or true),(false or true),E,Constraints,"def self.upgrade!
+      return false unless setup?
+
+      Migrations.migrate_up!
+    end"
+[s]Ronin::Database,setup,Arg,uri,?String,(Hash or String),T,Constraints,"def self.setup(uri=nil)
+      # setup the database log
+      unless @log
+        if $DEBUG then log(:stream => $stderr, :level => :debug)
+        else           log
+        end
+      end
+
+      if uri
+        # only setup the default database repositories
+        DataMapper.setup(:default,uri)
+      else
+        # setup the database repositories
+        repositories.each do |name,uri|
+          DataMapper.setup(name,uri)
+        end
+      end
+
+      # finalize the Models
+      DataMapper.finalize
+
+      # apply any new migrations to the database
+      upgrade!
+    end"
+[s]Ronin::Database,repository,Arg,name,{ [s]Ronin::Database#repository arg: name },(String or Symbol),N,Constraints,"def self.repository(name,&block)
+      name = name.to_sym
+
+      unless repository?(name)
+        raise(UnknownRepository,""unknown database repository #{name}"")
+      end
+
+      return DataMapper.repository(name,&block)
+    end"
+[s]Ronin::Database,repository,Ret,"",String,DataMapper::Repository,T,Twin,"def self.repository(name,&block)
+      name = name.to_sym
+
+      unless repository?(name)
+        raise(UnknownRepository,""unknown database repository #{name}"")
+      end
+
+      return DataMapper.repository(name,&block)
+    end"
+[s]Ronin::Database,clear,Arg,name,{ [s]Ronin::Database#clear arg: name },(String or Symbol),N,Constraints,"def self.clear(name)
+      name = name.to_sym
+
+      unless repository?(name)
+        raise(UnknownRepository,""unknown database repository #{name}"")
+      end
+
+      DataMapper.auto_migrate!(name)
+
+      yield if block_given?
+      return nil
+    end"
+[s]Ronin::Database,clear,Ret,"",nil,nil,E,Constraints,"def self.clear(name)
+      name = name.to_sym
+
+      unless repository?(name)
+        raise(UnknownRepository,""unknown database repository #{name}"")
+      end
+
+      DataMapper.auto_migrate!(name)
+
+      yield if block_given?
+      return nil
+    end"
+[s]Ronin::Database,map,Ret,"",Array<{ [s]Ronin::Database#map array_param: array_param_#<Parser::Source::Map::Collection:0x00007f929f0f4f90> }>,Array,P,Constraints,"def self.map
+      results = []
+
+      repositories.each_key do |name|
+        DataMapper.repository(name) do
+          result = yield
+          results << result unless result.nil?
+        end
+      end
+
+      return results
+    end"
+Ronin::Model::HasAuthors::ClassMethods,written_by,Arg,name,String,String,E,Twin,"def written_by(name)
+          all('authors.name.like' => ""%#{name}%"")
+        end"
+Ronin::Model::HasAuthors::ClassMethods,written_by,Ret,"",Array<URL>,Array<Model>,P,Twin,"def written_by(name)
+          all('authors.name.like' => ""%#{name}%"")
+        end"
+Ronin::Model::HasAuthors::ClassMethods,written_for,Arg,name,String,String,E,Twin,"def written_for(name)
+          all('authors.organization.like' => ""%#{name}%"")
+        end"
+Ronin::Model::HasAuthors::ClassMethods,written_for,Ret,"",Array<URL>,Array<Model>,P,Twin,"def written_for(name)
+          all('authors.organization.like' => ""%#{name}%"")
+        end"
+Ronin::Model::HasDescription::ClassMethods,describing,Arg,fragment,String,String,E,Twin,"def describing(fragment)
+          all(:description.like => ""%#{fragment}%"")
+        end"
+Ronin::Model::HasDescription::ClassMethods,describing,Ret,"",Array<URL>,Array<Model>,P,Twin,"def describing(fragment)
+          all(:description.like => ""%#{fragment}%"")
+        end"
+Ronin::Model::HasLicense::ClassMethods,licensed_under,Arg,license,String,[ to_s: () -> String ],T,Twin,"def licensed_under(license)
+          conditions = case license
+                       when License
+                         {:license => license}
+                       when Symbol
+                         {:license => License.predefined_resource(license)}
+                       else
+                         {'license.name' => license.to_s}
+                       end
+
+          all(conditions)
+        end"
+Ronin::Model::HasLicense::ClassMethods,licensed_under,Ret,"",Array<URL>,Array<Model>,P,Twin,"def licensed_under(license)
+          conditions = case license
+                       when License
+                         {:license => license}
+                       when Symbol
+                         {:license => License.predefined_resource(license)}
+                       else
+                         {'license.name' => license.to_s}
+                       end
+
+          all(conditions)
+        end"
+Ronin::Model::HasLicense::InstanceMethods,licensed_under,Arg,name,String,(String or Symbol),E,Twin,"def licensed_under(name)
+          self.license = Ronin::License.predefined_resource(name)
+        end"
+Ronin::Model::HasLicense::InstanceMethods,licensed_under,Ret,"",Array<URL>,License,T,Twin,"def licensed_under(name)
+          self.license = Ronin::License.predefined_resource(name)
+        end"
+Ronin::Model::HasName::InstanceMethods,to_s,Ret,"",String,String,E,Constraints,"def to_s
+          self.name.to_s
+        end"
+Ronin::Model::HasUniqueName::InstanceMethods,to_s,Ret,"",String,String,E,Constraints,"def to_s
+          self.name.to_s
+        end"
+Ronin::Model::HasUniqueName::InstanceMethods,inspect,Ret,"",String,String,E,Constraints,"def inspect
+          ""#<#{self.class}: #{self.name}>""
+        end"
+[s]Ronin::Model,included,Arg,base,"([ <: (Module) -> { { [s]Ronin::Model#included arg: base }#< call_ret: ret } ] and [ send: (:extend, Module) -> { { [s]Ronin::Model#included arg: base }#send call_ret: ret } ] and [ send: (:include, Module) -> { { [s]Ronin::Model#included arg: base }#send call_ret: ret } ] and [ send: (:include, Module, Module, Module) -> { { [s]Ronin::Model#included arg: base }#send call_ret: ret } ])",Class,TS,Constraints,"def self.included(base)
+      unless base < DataMapper::Resource
+        base.send :include, DataMapper::Resource
+      end
+
+      # include DataMapper plugins
+      base.send :include, DataMapper::Migrations,
+                          DataMapper::Serialize,
+                          DataMapper::Timestamps
+
+      # include Model types / methods
+      base.send :include, Model::Types
+      base.send :include, InstanceMethods
+      base.send :extend,  ClassMethods
+    end"
+Ronin::Model::InstanceMethods,humanize_attributes,Arg,options,?[ []: (:exclude) -> { { Ronin::Model::InstanceMethods#humanize_attributes arg: options }#[] call_ret: ret } ],Hash,TS,Constraints,"def humanize_attributes(options={})
+        exclude = [:id, :type]
+
+        if options[:exclude]
+          exclude += options[:exclude]
+        end
+
+        formatter = lambda { |value|
+          case value
+          when Array
+            RDL.type_cast(value.map(&formatter), ""Array<String>"").join(', ')
+          when Symbol
+            DataMapper::Inflector.humanize(value)
+          else
+            value.to_s
+          end
+        }
+
+        formatted = {}
+
+        self.attributes.each do |name,value|
+          next if (value.nil? || (value.respond_to?(:empty?) && value.empty?))
+
+          unless (exclude.include?(name) || value.nil?)
+            name = name.to_s
+
+            unless name[-3..-1] == '_id'
+              name = DataMapper::Inflector.humanize(name)
+              value = formatter.call(value)
+
+              yield name, value if block_given?
+
+              formatted[name] = value
+            end
+          end
+        end
+
+        return formatted
+      end"
+Ronin::Model::InstanceMethods,humanize_attributes,Ret,"","Hash<{ Ronin::Model::InstanceMethods#humanize_attributes hash_param_key: hash_param_key_#<Parser::Source::Map::Collection:0x00007f929bc4fcb8> }, { Ronin::Model::InstanceMethods#humanize_attributes hash_param_val: hash_param_val_#<Parser::Source::Map::Collection:0x00007f929bc4fcb8> }>","Hash<String, String>",P,Constraints,"def humanize_attributes(options={})
+        exclude = [:id, :type]
+
+        if options[:exclude]
+          exclude += options[:exclude]
+        end
+
+        formatter = lambda { |value|
+          case value
+          when Array
+            RDL.type_cast(value.map(&formatter), ""Array<String>"").join(', ')
+          when Symbol
+            DataMapper::Inflector.humanize(value)
+          else
+            value.to_s
+          end
+        }
+
+        formatted = {}
+
+        self.attributes.each do |name,value|
+          next if (value.nil? || (value.respond_to?(:empty?) && value.empty?))
+
+          unless (exclude.include?(name) || value.nil?)
+            name = name.to_s
+
+            unless name[-3..-1] == '_id'
+              name = DataMapper::Inflector.humanize(name)
+              value = formatter.call(value)
+
+              yield name, value if block_given?
+
+              formatted[name] = value
+            end
+          end
+        end
+
+        return formatted
+      end"
+Ronin::Model::Types::Description,typecast,Arg,value,([ nil?: () -> { { Ronin::Model::Types::Description#typecast arg: value }#nil? call_ret: ret } ] and [ to_s: () -> String ]),Object,TS,Constraints,"def typecast(value)
+          return nil if value.nil?
+
+          sanitized_lines = []
+
+          value.to_s.each_line do |line|
+            sanitized_lines << line.strip
+          end
+
+          return sanitized_lines.join(""\n"").strip
+        end"
+Ronin::Model::Types::Description,typecast,Ret,"",String,String,E,Constraints,"def typecast(value)
+          return nil if value.nil?
+
+          sanitized_lines = []
+
+          value.to_s.each_line do |line|
+            sanitized_lines << line.strip
+          end
+
+          return sanitized_lines.join(""\n"").strip
+        end"
+Ronin::Script::Buildable,built?,Ret,"",(false or true),(false or true),E,Constraints,"def built?
+        @built == true
+      end"
+Ronin::Script::Buildable,build,Ret,"",Ronin::Script::Buildable,Script,T,Constraints,"def build(&block)
+        @build_blocks << block
+        return self
+      end"
+Ronin::Script::Deployable,deployed?,Ret,"",(false or true),(false or true),E,Constraints,"def deployed?
+        @deployed == true
+      end"
+Ronin::Script::Deployable,evacuated?,Ret,"",(false or true),(false or true),E,Constraints,"def evacuated?
+        @evacuated == true
+      end"
+Ronin::Script::Deployable,deploy,Ret,"",Ronin::Script::Deployable,Script,T,Constraints,"def deploy(&block)
+        @deploy_blocks << block
+        return self
+      end"
+Ronin::Script::Deployable,evacuate,Ret,"",Ronin::Script::Deployable,Script,T,Constraints,"def evacuate(&block)
+        @evacuate_blocks.unshift(block)
+        return self
+      end"
+Ronin::Script::Path,class_path,Ret,"",String,String,E,Twin,"def class_path
+        if self.class_name
+          DataMapper::Inflector.underscore(self.class_name)
+        end
+      end"
+Ronin::Script::Path,script_class,Ret,"",{ Ronin::Script::Path#script_class ret: ret },Class,N,,"def script_class
+        return unless self.class_name
+
+        # filter out unloadable script classes
+        begin
+          require class_path
+        rescue Gem::LoadError => e
+          raise(e)
+        rescue ::LoadError
+        end
+
+        # filter out missing class names
+        loaded_class = begin
+                         DataMapper::Ext::Object.full_const_get(self.class_name)
+                       rescue NameError
+                         return nil
+                       end
+
+        # filter out non-script classes
+        return loaded_class if RDL.type_cast(loaded_class, ""Class"") < Script
+      end"
+Ronin::Script::Path,cached_script,Ret,"",nil,Model,T,Constraints,"def cached_script
+        if (cached_class = script_class)
+          return cached_class.first(:script_path => self)
+        end
+      end"
+Ronin::Script::Path,updated?,Ret,"",(false or true),(false or true),E,Constraints,"def updated?
+        # assume updates if there is no timestamp
+        return true unless self.timestamp
+
+        if File.file?(self.path)
+          return self.path.mtime > self.timestamp
+        end
+
+        # do not assume updates, if there is no path
+        return false
+      end"
+Ronin::Script::Path,missing?,Ret,"",String,(false or true),T,Twin,"def missing?
+        !(self.path.file?)
+      end"
+Ronin::Script::Path,cache,Ret,"",(false or true),(false or true),E,Constraints,"def cache
+        if (new_script = load_script)
+          # reset the model-class
+          self.class_name = new_script.class.to_s
+
+          # update the timestamp
+          self.timestamp = self.path.mtime
+
+          # re-cache the newly loaded script
+          new_script.script_path = self
+
+          if new_script.save
+            @cache_errors = nil
+            return true
+          else
+            @cache_errors = new_script.errors
+          end
+        end
+
+        return false
+      end"
+Ronin::Script::Path,sync,Ret,"",(false or true),(false or true),E,Constraints,"def sync
+        if missing?
+          # destroy the cached file, if the actual file is missing
+          return destroy
+        elsif updated?
+          # clean the previously cached file
+          clean
+
+          # if we couldn't cache anything, self-destruct
+          destroy unless cache
+          return true
+        end
+
+        return false
+      end"
+Ronin::Script::Path,to_s,Ret,"",String,String,E,Constraints,"def to_s
+        self.path.to_s
+      end"
+[s]Ronin::Script,load_from,Arg,path,String,String,E,Twin,"def Script.load_from(path)
+      path = File.expand_path(path)
+      script = ObjectLoader.load_objects(path).find do |obj|
+        obj.class < Script
+      end
+
+      unless script
+        raise(""No cacheable object defined in #{path.dump}"")
+      end
+
+      script.instance_variable_set('@script_loaded',true)
+      script.script_path = Path.new(
+        :path => path,
+        :timestamp => File.mtime(path),
+        :class_name => script.class.to_s
+      )
+
+      return script
+    end"
+[s]Ronin::Script,load_from,Ret,"",Ronin::Script::Testable,Script,T,Twin,"def Script.load_from(path)
+      path = File.expand_path(path)
+      script = ObjectLoader.load_objects(path).find do |obj|
+        obj.class < Script
+      end
+
+      unless script
+        raise(""No cacheable object defined in #{path.dump}"")
+      end
+
+      script.instance_variable_set('@script_loaded',true)
+      script.script_path = Path.new(
+        :path => path,
+        :timestamp => File.mtime(path),
+        :class_name => script.class.to_s
+      )
+
+      return script
+    end"
+Ronin::Script::ClassMethods,short_name,Ret,"",String,String,E,Constraints,"def short_name
+        @short_name ||= RDL.type_cast(self.name, ""String"").split('::').last
+      end"
+Ronin::Script::ClassMethods,load_from,Arg,path,String,String,E,Twin,"def load_from(path)
+        load_object(path)
+      end"
+Ronin::Script::ClassMethods,load_from,Ret,"",Ronin::Script::Testable,Script,T,Twin,"def load_from(path)
+        load_object(path)
+      end"
+Ronin::Script::ClassMethods,load_all,Arg,attributes,"?Hash<:import, { flag: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret }, usage: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } }>",Hash,P,Constraints,"def load_all(attributes={})
+        resources = RDL.type_cast(all(attributes), ""Array<Ronin::Script::InstanceMethods>"")
+        resources.each { |resource| resource.load_script! }
+
+        return resources
+      end"
+Ronin::Script::ClassMethods,load_first,Arg,attributes,"?Hash<:import, { flag: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret }, usage: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } }>",Hash,P,Constraints,"def load_first(attributes={})
+        if (resource = first(attributes))
+          RDL.type_cast(resource, ""Ronin::Script::InstanceMethods"").load_script!
+        end
+
+        return resource
+      end"
+Ronin::Script::ClassMethods,load_first,Ret,"",Ronin::Script::Testable,Cacheable,T,Twin,"def load_first(attributes={})
+        if (resource = first(attributes))
+          RDL.type_cast(resource, ""Ronin::Script::InstanceMethods"").load_script!
+        end
+
+        return resource
+      end"
+Ronin::Script::InstanceMethods,script_loaded?,Ret,"",(false or true),(false or true),E,Constraints,"def script_loaded?
+        @script_loaded == true
+      end"
+Ronin::Script::InstanceMethods,prepared_for_cache?,Ret,"",(false or true),(false or true),E,Constraints,"def prepared_for_cache?
+        @cache_prepared == true
+      end"
+Ronin::Script::InstanceMethods,cached?,Ret,"",String,(false or true),T,Twin,"def cached?
+        (saved? && self.script_path)
+      end"
+Ronin::Script::InstanceMethods,run,Arg,arguments,*{ Ronin::Script::InstanceMethods#run arg: arguments },Array,N,,"def run(*arguments)
+      end"
+Ronin::Script::InstanceMethods,inspect,Ret,"",String,String,E,Constraints,"def inspect
+        body = []
+
+        RDL.type_cast(self.attributes, ""Hash<String, String>"").each do |name,value|
+          body << ""#{name}: #{value.inspect}""
+        end
+
+        param_pairs = []
+
+        RDL.type_cast(self.params, ""Hash<String, Ronin::URLQueryParam>"").each do |name,param|
+          param_pairs << ""#{name}: #{param.value.inspect}""
+        end
+
+        body << ""params: {#{param_pairs.join(', ')}}""
+
+        return ""#<#{self.class}: #{body.join(', ')}>""
+      end"
+Ronin::Script::InstanceMethods,cache,Ret,"",(false or true),(false or true),E,Constraints,"def cache
+        if (block_given? && !(cached? || prepared_for_cache?))
+          @cache_prepared = true
+
+          yield
+          return true
+        end
+
+        return false
+      end"
+Ronin::Script::Testable,test!,Ret,"",(false or true),(false or true),E,Constraints,"def test!
+        print_info ""Testing #{RDL.type_cast(self.class, ""Ronin::Script::ClassMethods"").short_name} ...""
+
+        @test_blocks.each { |block| block.call() }
+
+        print_info ""#{RDL.type_cast(self.class, ""Ronin::Script::ClassMethods"").short_name} tested!""
+        return true
+      end"
+Ronin::Script::Testable,flunk,Arg,message,String,String,E,Constraints,"def flunk(message)
+        raise(TestFailed,message)
+      end"
+Ronin::Script::Testable,test,Ret,"",Ronin::Script::Testable,Script,T,Constraints,"def test(&block)
+        @test_blocks << block
+        return self
+      end"
+Ronin::Script::Testable,test?,Arg,message,String,String,E,Constraints,"def test?(message,&block)
+        test { flunk(message) unless block.call() }
+      end"
+Ronin::Script::Testable,test?,Ret,"",Ronin::Script::Testable,(false or true),T,Constraints,"def test?(message,&block)
+        test { flunk(message) unless block.call() }
+      end"
+Ronin::Script::Testable,test_equal,Arg,name,(String or Symbol),Symbol,E,Constraints,"def test_equal(name,expected_value,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} (#{actual_value.inspect}) must equal #{expected_value.inspect}""
+
+          flunk(message) unless actual_value == expected_value
+        end
+      end"
+Ronin::Script::Testable,test_equal,Arg,expected_value,[ inspect: () -> { { Ronin::Script::Testable#test_equal arg: expected_value }#inspect call_ret: ret } ],Object,TS,Constraints,"def test_equal(name,expected_value,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} (#{actual_value.inspect}) must equal #{expected_value.inspect}""
+
+          flunk(message) unless actual_value == expected_value
+        end
+      end"
+Ronin::Script::Testable,test_equal,Arg,message,?String,String,E,Constraints,"def test_equal(name,expected_value,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} (#{actual_value.inspect}) must equal #{expected_value.inspect}""
+
+          flunk(message) unless actual_value == expected_value
+        end
+      end"
+Ronin::Script::Testable,test_equal,Ret,"",Ronin::Script::Testable,(false or true),T,Constraints,"def test_equal(name,expected_value,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} (#{actual_value.inspect}) must equal #{expected_value.inspect}""
+
+          flunk(message) unless actual_value == expected_value
+        end
+      end"
+Ronin::Script::Testable,test_not_equal,Arg,name,(String or Symbol),Symbol,E,Constraints,"def test_not_equal(name,unexpected_value,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot equal #{unexpected_value.inspect}""
+
+          flunk(message) unless actual_value != unexpected_value
+        end
+      end"
+Ronin::Script::Testable,test_not_equal,Arg,unexpected_value,[ inspect: () -> { { Ronin::Script::Testable#test_not_equal arg: unexpected_value }#inspect call_ret: ret } ],Object,TS,Constraints,"def test_not_equal(name,unexpected_value,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot equal #{unexpected_value.inspect}""
+
+          flunk(message) unless actual_value != unexpected_value
+        end
+      end"
+Ronin::Script::Testable,test_not_equal,Arg,message,?String,String,E,Constraints,"def test_not_equal(name,unexpected_value,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot equal #{unexpected_value.inspect}""
+
+          flunk(message) unless actual_value != unexpected_value
+        end
+      end"
+Ronin::Script::Testable,test_not_equal,Ret,"",Ronin::Script::Testable,(false or true),T,Constraints,"def test_not_equal(name,unexpected_value,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot equal #{unexpected_value.inspect}""
+
+          flunk(message) unless actual_value != unexpected_value
+        end
+      end"
+Ronin::Script::Testable,test_set,Arg,name,(String or Symbol),Symbol,E,Constraints,"def test_set(name,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} is not set""
+
+          blank = if actual_value.respond_to?(:empty?)
+                    actual_value.empty?
+                  else
+                    actual_value.nil?
+                  end
+
+          flunk(message) if blank
+        end
+      end"
+Ronin::Script::Testable,test_set,Arg,message,?String,String,E,Constraints,"def test_set(name,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} is not set""
+
+          blank = if actual_value.respond_to?(:empty?)
+                    actual_value.empty?
+                  else
+                    actual_value.nil?
+                  end
+
+          flunk(message) if blank
+        end
+      end"
+Ronin::Script::Testable,test_set,Ret,"",Ronin::Script::Testable,(false or true),T,Constraints,"def test_set(name,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""Object"")
+          message ||= ""#{name} is not set""
+
+          blank = if actual_value.respond_to?(:empty?)
+                    actual_value.empty?
+                  else
+                    actual_value.nil?
+                  end
+
+          flunk(message) if blank
+        end
+      end"
+Ronin::Script::Testable,test_match,Arg,name,(String or Symbol),Symbol,E,Constraints,"def test_match(name,pattern,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) must match #{pattern.inspect}""
+
+          flunk(message) unless actual_value.match(pattern)
+        end
+      end"
+Ronin::Script::Testable,test_match,Arg,pattern,(Regexp or String),(Regexp or String),E,Constraints,"def test_match(name,pattern,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) must match #{pattern.inspect}""
+
+          flunk(message) unless actual_value.match(pattern)
+        end
+      end"
+Ronin::Script::Testable,test_match,Arg,message,?String,String,E,Constraints,"def test_match(name,pattern,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) must match #{pattern.inspect}""
+
+          flunk(message) unless actual_value.match(pattern)
+        end
+      end"
+Ronin::Script::Testable,test_match,Ret,"",Ronin::Script::Testable,(false or true),T,Constraints,"def test_match(name,pattern,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) must match #{pattern.inspect}""
+
+          flunk(message) unless actual_value.match(pattern)
+        end
+      end"
+Ronin::Script::Testable,test_no_match,Arg,name,(String or Symbol),Symbol,E,Constraints,"def test_no_match(name,pattern,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot match #{pattern.inspect}""
+
+          flunk(message) unless !actual_value.match(pattern)
+        end
+      end"
+Ronin::Script::Testable,test_no_match,Arg,pattern,(Regexp or String),(Regexp or String),E,Constraints,"def test_no_match(name,pattern,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot match #{pattern.inspect}""
+
+          flunk(message) unless !actual_value.match(pattern)
+        end
+      end"
+Ronin::Script::Testable,test_no_match,Arg,message,?String,String,E,Constraints,"def test_no_match(name,pattern,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot match #{pattern.inspect}""
+
+          flunk(message) unless !actual_value.match(pattern)
+        end
+      end"
+Ronin::Script::Testable,test_no_match,Ret,"",Ronin::Script::Testable,(false or true),T,Constraints,"def test_no_match(name,pattern,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot match #{pattern.inspect}""
+
+          flunk(message) unless !actual_value.match(pattern)
+        end
+      end"
+Ronin::Script::Testable,test_in,Arg,name,(String or Symbol),Symbol,E,Constraints,"def test_in(name,expected_values,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) must be one of #{expected_values.inspect}""
+
+          flunk(message) unless expected_values.include?(actual_value)
+        end
+      end"
+Ronin::Script::Testable,test_in,Arg,expected_values,Array<String>,String,T,Twin,"def test_in(name,expected_values,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) must be one of #{expected_values.inspect}""
+
+          flunk(message) unless expected_values.include?(actual_value)
+        end
+      end"
+Ronin::Script::Testable,test_in,Ret,"",Ronin::Script::Testable,(false or true),T,Constraints,"def test_in(name,expected_values,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) must be one of #{expected_values.inspect}""
+
+          flunk(message) unless expected_values.include?(actual_value)
+        end
+      end"
+Ronin::Script::Testable,test_not_in,Arg,name,(String or Symbol),Symbol,E,Constraints,"def test_not_in(name,unexpected_values,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot be one of #{unexpected_values.inspect}""
+
+          flunk(message) unless !unexpected_values.include?(actual_value)
+        end
+      end"
+Ronin::Script::Testable,test_not_in,Arg,unexpected_values,Array<String>,String,T,Twin,"def test_not_in(name,unexpected_values,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot be one of #{unexpected_values.inspect}""
+
+          flunk(message) unless !unexpected_values.include?(actual_value)
+        end
+      end"
+Ronin::Script::Testable,test_not_in,Ret,"",Ronin::Script::Testable,(false or true),T,Constraints,"def test_not_in(name,unexpected_values,message=nil)
+        name = name.to_sym
+
+        test do
+          actual_value = RDL.type_cast(self.send(name), ""String"")
+          message ||= ""#{name} (#{actual_value.inspect}) cannot be one of #{unexpected_values.inspect}""
+
+          flunk(message) unless !unexpected_values.include?(actual_value)
+        end
+      end"
+[s]Ronin::UI::CLI::ClassCommand,class_name,Arg,name,?String,Symbol,E,Constraints,"def self.class_name(name=nil)
+          if name then @class_name = name.to_sym
+          else         @class_name ||= self.name.split('::').last.to_sym
+          end
+        end"
+[s]Ronin::UI::CLI::ClassCommand,class_name,Ret,"",Symbol,Symbol,E,Constraints,"def self.class_name(name=nil)
+          if name then @class_name = name.to_sym
+          else         @class_name ||= self.name.split('::').last.to_sym
+          end
+        end"
+[s]Ronin::UI::CLI::ClassCommand,command_class,Ret,"",Symbol,Class,T,Constraints,"def self.command_class
+          @command_class ||= class_namespace.const_get(class_name)
+        end"
+Ronin::UI::CLI::ClassCommand,option_parser,Ret,"",OptionParser,OptionParser,E,Constraints,"def option_parser
+          super do |opts|
+            @object.each_param do |param|
+              Parameters::Options.define(opts,param)
+            end
+
+            yield opts if block_given?
+          end
+        end"
+[s]Ronin::UI::CLI,commands,Ret,"",{ [s]Ronin::UI::CLI#commands ret: ret },Hash,N,,"def CLI.commands
+        if @commands.empty?
+          commands_dir = File.join('lib',Commands.namespace_root)
+
+          Installation.each_file_in(commands_dir,'rb') do |path|
+            # remove the .rb file extension
+            name = path.chomp('.rb')
+
+            # replace any file separators with a ':', to mimic the
+            # naming convention of Rake/Thor.
+            name.tr!(File::SEPARATOR,':')
+
+            @commands << name
+          end
+        end
+
+        return @commands.sort
+      end"
+[s]Ronin::UI::CLI,command,Arg,name,String,(String or Symbol),E,Twin,"def CLI.command(name)
+        name = name.to_s
+        path = name.tr(':','/')
+
+        unless (command = Commands.require_const(path))
+          raise(UnknownCommand,""unable to load the command #{name.dump}"",caller)
+        end
+
+        unless command.respond_to?(:start)
+          raise(UnknownCommand,""command #{name.dump} must provide a 'start' method"",caller)
+        end
+
+        return command
+      end"
+[s]Ronin::UI::CLI,command,Ret,"",{ [s]Ronin::UI::CLI#command ret: ret },Command,N,,"def CLI.command(name)
+        name = name.to_s
+        path = name.tr(':','/')
+
+        unless (command = Commands.require_const(path))
+          raise(UnknownCommand,""unable to load the command #{name.dump}"",caller)
+        end
+
+        unless command.respond_to?(:start)
+          raise(UnknownCommand,""command #{name.dump} must provide a 'start' method"",caller)
+        end
+
+        return command
+      end"
+[s]Ronin::UI::CLI,start,Arg,argv,?Array<String>,Array,P,Constraints,"def CLI.start(argv=ARGV)
+        name = argv.first
+
+        # run the default command if an option or no arguments were given
+        if (name.nil? || name[0,1] == '-')
+          name = DEFAULT_COMMAND
+        else
+          argv = argv[1..-1]
+        end
+
+        begin
+          CLI.command(name).start(argv)
+        rescue UnknownCommand => e
+          $stderr.puts e.message
+          exit -1
+        end
+
+        return true
+      end"
+[s]Ronin::UI::CLI,start,Ret,"",(false or true),(false or true),E,Constraints,"def CLI.start(argv=ARGV)
+        name = argv.first
+
+        # run the default command if an option or no arguments were given
+        if (name.nil? || name[0,1] == '-')
+          name = DEFAULT_COMMAND
+        else
+          argv = argv[1..-1]
+        end
+
+        begin
+          CLI.command(name).start(argv)
+        rescue UnknownCommand => e
+          $stderr.puts e.message
+          exit -1
+        end
+
+        return true
+      end"
+Ronin::UI::CLI::Command,initialize,Arg,options,"?Hash<:import, { flag: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret }, usage: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } }>","Hash<Symbol, Object>",P,Constraints,"def initialize(options={})
+          super()
+
+          initialize_params(options)
+        end"
+Ronin::UI::CLI::Command,initialize,Ret,"",self,self,E,,"def initialize(options={})
+          super()
+
+          initialize_params(options)
+        end"
+[s]Ronin::UI::CLI::Command,start,Arg,argv,?Array<String>,Array<String>,E,Constraints,"def self.start(argv=ARGV)
+          new().start(argv)
+        end"
+[s]Ronin::UI::CLI::Command,start,Ret,"",(false or true),(false or true),E,Constraints,"def self.start(argv=ARGV)
+          new().start(argv)
+        end"
+[s]Ronin::UI::CLI::Command,run,Arg,options,"?Hash<:import, { flag: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret }, usage: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } }>","Hash<Symbol, Object>",P,Constraints,"def self.run(options={})
+          new().run(options)
+        end"
+[s]Ronin::UI::CLI::Command,run,Ret,"",(false or true),(false or true),E,Constraints,"def self.run(options={})
+          new().run(options)
+        end"
+Ronin::UI::CLI::Command,start,Arg,argv,?Array<String>,Array<String>,E,Constraints,"def start(argv=ARGV)
+          arguments = option_parser.parse(argv)
+
+          # set additional arguments
+          self.class.each_argument do |name|
+            # no more arguments left
+            break if arguments.empty?
+
+            param = get_param(name)
+
+            if param.type <= Parameters::Types::Array
+              # allow Array/Set arguments to collect all remaining args
+              param.value = arguments.shift(arguments.length)
+            else
+              param.value = arguments.shift
+            end
+          end
+
+          unless arguments.empty?
+            print_error ""Too many arguments. Please consult --help""
+            exit -1
+          end
+
+          begin
+            run
+          rescue Interrupt
+            # Ctrl^C
+            exit 130
+          rescue Errno::EPIPE
+            # STDOUT was closed
+          rescue => error
+            print_exception(error)
+            exit -1
+          end
+
+          return true
+        end"
+Ronin::UI::CLI::Command,start,Ret,"",(false or true),(false or true),E,Constraints,"def start(argv=ARGV)
+          arguments = option_parser.parse(argv)
+
+          # set additional arguments
+          self.class.each_argument do |name|
+            # no more arguments left
+            break if arguments.empty?
+
+            param = get_param(name)
+
+            if param.type <= Parameters::Types::Array
+              # allow Array/Set arguments to collect all remaining args
+              param.value = arguments.shift(arguments.length)
+            else
+              param.value = arguments.shift
+            end
+          end
+
+          unless arguments.empty?
+            print_error ""Too many arguments. Please consult --help""
+            exit -1
+          end
+
+          begin
+            run
+          rescue Interrupt
+            # Ctrl^C
+            exit 130
+          rescue Errno::EPIPE
+            # STDOUT was closed
+          rescue => error
+            print_exception(error)
+            exit -1
+          end
+
+          return true
+        end"
+Ronin::UI::CLI::Command,run,Arg,options,"?Hash<:import, { flag: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret }, usage: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } }>","Hash<Symbol, Object>",P,Constraints,"def run(options={})
+          self.params = options
+
+          setup
+          execute
+
+          return true
+        ensure
+          cleanup
+        end"
+Ronin::UI::CLI::Command,run,Ret,"",(false or true),(false or true),E,Constraints,"def run(options={})
+          self.params = options
+
+          setup
+          execute
+
+          return true
+        ensure
+          cleanup
+        end"
+[s]Ronin::UI::CLI::Command,options,Ret,"","Hash<:import, { flag: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret }, usage: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } }>","Hash<Symbol, Hash>",P,Constraints,"def self.options
+          @options ||= {}
+        end"
+[s]Ronin::UI::CLI::Command,option,Arg,name,:import,Symbol,E,Constraints,"def self.option(name,options={})
+          self.options[name] = {
+            :flag  => options[:flag],
+            :usage => options[:usage],
+          }
+
+          return parameter(name,options)
+        end"
+[s]Ronin::UI::CLI::Command,option,Arg,options,?([ []: (:flag) -> { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } ] and [ []: (:usage) -> { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } ]),Hash,TS,Constraints,"def self.option(name,options={})
+          self.options[name] = {
+            :flag  => options[:flag],
+            :usage => options[:usage],
+          }
+
+          return parameter(name,options)
+        end"
+[s]Ronin::UI::CLI::Command,option,Ret,"",String,Parameters::ClassParam,T,Twin,"def self.option(name,options={})
+          self.options[name] = {
+            :flag  => options[:flag],
+            :usage => options[:usage],
+          }
+
+          return parameter(name,options)
+        end"
+[s]Ronin::UI::CLI::Command,options?,Ret,"",(false or true),(false or true),E,Twin,"def self.options?
+          each_option.any?
+        end"
+[s]Ronin::UI::CLI::Command,arguments,Ret,"",Array<Symbol>,Array<Symbol>,E,Constraints,"def self.arguments
+          @arguments ||= []
+        end"
+[s]Ronin::UI::CLI::Command,argument,Arg,name,String,Symbol,E,Twin,"def self.argument(name,options={})
+          self.arguments << name.to_sym
+
+          return parameter(name,options)
+        end"
+[s]Ronin::UI::CLI::Command,argument,Arg,options,"?Hash<:import, { flag: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret }, usage: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } }>",Hash,P,Constraints,"def self.argument(name,options={})
+          self.arguments << name.to_sym
+
+          return parameter(name,options)
+        end"
+[s]Ronin::UI::CLI::Command,argument,Ret,"",String,Parameters::ClassParam,T,Twin,"def self.argument(name,options={})
+          self.arguments << name.to_sym
+
+          return parameter(name,options)
+        end"
+[s]Ronin::UI::CLI::Command,arguments?,Ret,"",(false or true),(false or true),E,Twin,"def self.arguments?
+          each_argument.any?
+        end"
+Ronin::UI::CLI::Command,option_parser,Ret,"",OptionParser,OptionParser,E,Constraints,"def option_parser
+          OptionParser.new do |opts|
+            opts.banner = ""Usage: ronin #{self.class.command_name} #{self.class.usage}""
+
+            # append the arguments to the banner
+            self.class.each_argument do |name|
+              opts.banner << "" #{name.to_s.upcase}""
+            end
+
+            opts.separator ''
+            opts.separator 'Options:'
+
+            self.class.each_option do |name,options|
+              Parameters::Options.define(opts,get_param(name),options)
+            end
+
+            yield opts if block_given?
+
+            if self.class.arguments?
+              opts.separator ''
+              opts.separator 'Arguments:'
+
+              self.class.each_argument do |name|
+                param = get_param(name)
+                name  = name.to_s.upcase
+                desc  = param.description
+
+                opts.separator ""    #{name.ljust(33)}#{desc}""
+              end
+            end
+
+            unless self.class.examples.empty?
+              opts.separator ''
+              opts.separator 'Examples:'
+
+              self.class.examples.each do |example|
+                opts.separator ""  #{example}""
+              end
+            end
+
+            if self.class.summary
+              opts.separator ''
+              opts.separator self.class.summary
+            end
+          end
+        end"
+[s]Ronin::UI::CLI::ModelCommand,query_options,Ret,"",Array<:import>,Array<Symbol>,P,Constraints,"def self.query_options
+          @query_options ||= []
+        end"
+[s]Ronin::UI::CLI::ModelCommand,query_option,Arg,name,:import,Symbol,E,Constraints,"def self.query_option(name,options={})
+          query_options << name
+
+          return option(name,options)
+        end"
+[s]Ronin::UI::CLI::ModelCommand,query_option,Arg,options,?([ []: (:flag) -> { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } ] and [ []: (:usage) -> { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } ]),Hash,TS,Constraints,"def self.query_option(name,options={})
+          query_options << name
+
+          return option(name,options)
+        end"
+Ronin::UI::CLI::Printing,indent,Arg,n,?Number,Number,E,Constraints,"def indent(n=2)
+          @indent += n
+
+          yield
+
+          @indent -= n
+          return nil
+        end"
+Ronin::UI::CLI::Printing,indent,Ret,"",String,nil,T,Twin,"def indent(n=2)
+          @indent += n
+
+          yield
+
+          @indent -= n
+          return nil
+        end"
+Ronin::UI::CLI::Printing,print_title,Arg,title,String,String,E,Twin,"def print_title(title)
+          puts ""[ #{title} ]\n""
+        end"
+Ronin::UI::CLI::Printing,print_array,Arg,array,[ each: () {({ { Ronin::UI::CLI::Printing#print_array arg: array }#each block_arg: value }) -> { { Ronin::UI::CLI::Printing#print_array arg: array }#each block_ret: block_ret }} -> { { Ronin::UI::CLI::Printing#print_array arg: array }#each call_ret: ret } ],Array,TS,Constraints,"def print_array(array,options={})
+          print_title(options[:title]) if options[:title]
+
+          indent do
+            array.each { |value| puts value }
+          end
+
+          puts if options[:title]
+          return nil
+        end"
+Ronin::UI::CLI::Printing,print_array,Arg,options,?[ []: (:title) -> { { Ronin::UI::CLI::Printing#print_array arg: options }#[] call_ret: ret } ],Hash,TS,Constraints,"def print_array(array,options={})
+          print_title(options[:title]) if options[:title]
+
+          indent do
+            array.each { |value| puts value }
+          end
+
+          puts if options[:title]
+          return nil
+        end"
+Ronin::UI::CLI::Printing,print_array,Ret,"",String,nil,T,Twin,"def print_array(array,options={})
+          print_title(options[:title]) if options[:title]
+
+          indent do
+            array.each { |value| puts value }
+          end
+
+          puts if options[:title]
+          return nil
+        end"
+Ronin::UI::CLI::Printing,print_hash,Arg,hash,"([ each: () {({ { Ronin::UI::CLI::Printing#print_hash arg: hash }#each block_arg: name }, { { Ronin::UI::CLI::Printing#print_hash arg: hash }#each block_arg: value }) -> { { Ronin::UI::CLI::Printing#print_hash arg: hash }#each block_ret: block_ret }} -> { { Ronin::UI::CLI::Printing#print_hash arg: hash }#each call_ret: ret } ] and [ keys: () -> { { Ronin::UI::CLI::Printing#print_hash arg: hash }#keys call_ret: ret } ])",Hash,TS,Constraints,"def print_hash(hash,options={})
+          align = hash.keys.map { |name|
+            name.to_s.length
+          }.max
+
+          print_title(options[:title]) if options[:title]
+
+          indent do
+            hash.each do |name,value|
+              name = ""#{name}:"".ljust(align)
+              puts ""#{name}\t#{value}""
+            end
+          end
+
+          puts if options[:title]
+          return nil
+        end"
+Ronin::UI::CLI::Printing,print_hash,Arg,options,?[ []: (:title) -> { { Ronin::UI::CLI::Printing#print_hash arg: options }#[] call_ret: ret } ],Hash,TS,Constraints,"def print_hash(hash,options={})
+          align = hash.keys.map { |name|
+            name.to_s.length
+          }.max
+
+          print_title(options[:title]) if options[:title]
+
+          indent do
+            hash.each do |name,value|
+              name = ""#{name}:"".ljust(align)
+              puts ""#{name}\t#{value}""
+            end
+          end
+
+          puts if options[:title]
+          return nil
+        end"
+Ronin::UI::CLI::Printing,print_hash,Ret,"",String,nil,T,Twin,"def print_hash(hash,options={})
+          align = hash.keys.map { |name|
+            name.to_s.length
+          }.max
+
+          print_title(options[:title]) if options[:title]
+
+          indent do
+            hash.each do |name,value|
+              name = ""#{name}:"".ljust(align)
+              puts ""#{name}\t#{value}""
+            end
+          end
+
+          puts if options[:title]
+          return nil
+        end"
+Ronin::UI::CLI::ResourcesCommand,print_resource,Arg,resource,String,DataMapper::Resource,T,Twin,"def print_resource(resource)
+          puts resource
+        end"
+Ronin::UI::CLI::ResourcesCommand,print_resources,Arg,resources,([ each: () {({ { Ronin::UI::CLI::ResourcesCommand#print_resources arg: resources }#each block_arg: resource }) -> { { Ronin::UI::CLI::ResourcesCommand#print_resources arg: resources }#each block_ret: block_ret }} -> { { Ronin::UI::CLI::ResourcesCommand#print_resources arg: resources }#each call_ret: ret } ] and [ to_csv: () -> { { Ronin::UI::CLI::ResourcesCommand#print_resources arg: resources }#to_csv call_ret: ret } ] and [ to_json: () -> { { Ronin::UI::CLI::ResourcesCommand#print_resources arg: resources }#to_json call_ret: ret } ] and [ to_xml: () -> { { Ronin::UI::CLI::ResourcesCommand#print_resources arg: resources }#to_xml call_ret: ret } ] and [ to_yaml: () -> { { Ronin::UI::CLI::ResourcesCommand#print_resources arg: resources }#to_yaml call_ret: ret } ]),DataMapper::Collection,TS,Constraints,"def print_resources(resources)
+          if    csv?  then print resources.to_csv
+          elsif xml?  then print resources.to_xml
+          elsif yaml? then print resources.to_yaml
+          elsif json? then print resources.to_json
+          else
+            resources.each { |resource| print_resource(resource) }
+          end
+        end"
+Ronin::UI::CLI::ScriptCommand,initialize,Arg,options,"?Hash<:import, { flag: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret }, usage: { { [s]Ronin::UI::CLI::Command#option arg: options }#[] call_ret: ret } }>","Hash<Symbol, Object>",P,Constraints,"def initialize(options={})
+          super(options)
+
+          @script_options = []
+        end"
+Ronin::UI::CLI::ScriptCommand,initialize,Ret,"",self,self,E,,"def initialize(options={})
+          super(options)
+
+          @script_options = []
+        end"
+Ronin::UI::CLI::ScriptCommand,start,Arg,argv,?Array<String>,Array<String>,E,Twin,"def start(argv=ARGV)
+          # collect the script options, upto the -- separator
+          @script_options = argv[0,argv.index('--') || argv.length]
+
+          super(argv)
+        end"
+[s]Ronin::UI::CLI::ScriptCommand,script_class,Arg,script,?[ included_modules: () -> { { [s]Ronin::UI::CLI::ScriptCommand#script_class arg: script }#included_modules call_ret: ret } ],Script,TS,Constraints,"def self.script_class(script=nil)
+          if (script && !script.included_modules.include?(Script))
+            raise(ArgumentError,""#{script} does not include Ronin::Script"")
+          end
+
+          return model(script)
+        end"
+[s]Ronin::UI::CLI::ScriptCommand,script_class,Ret,"",{ [s]Ronin::UI::CLI::ScriptCommand#script_class ret: ret },Script,N,,"def self.script_class(script=nil)
+          if (script && !script.included_modules.include?(Script))
+            raise(ArgumentError,""#{script} does not include Ronin::Script"")
+          end
+
+          return model(script)
+        end"
+Ronin::UI::CLI::ScriptCommand,load!,Ret,"",String,Script,T,Twin,"def load!
+          @script = if @file then self.class.model.load_from(@file)
+                    else          query.load_first
+                    end
+
+          unless @script
+            print_error ""Could not find or load the #{self.class.script_class.short_name}""
+            exit -1
+          end
+        end"
+Ronin::UI::CLI::ScriptCommand,param_option_parser,Arg,,"",Array<Parameters>,N,,"def param_option_parser
+          OptionParser.new do |opts|
+            opts.banner = ""usage: #{self.class.command_name} #{@script_options.join(' ')} -- [script_options]""
+            
+            opts.separator ''
+            opts.separator ""#{self.class.script_class.short_name} Options:""
+
+            @script.each_param do |param|
+              Parameters::Options.define(opts,param)
+            end
+
+            yield opts if block_given?
+          end
+        end"
+Ronin::UI::CLI::ScriptCommand,param_option_parser,Ret,"",OptionParser,OptionParser,E,Constraints,"def param_option_parser
+          OptionParser.new do |opts|
+            opts.banner = ""usage: #{self.class.command_name} #{@script_options.join(' ')} -- [script_options]""
+            
+            opts.separator ''
+            opts.separator ""#{self.class.script_class.short_name} Options:""
+
+            @script.each_param do |param|
+              Parameters::Options.define(opts,param)
+            end
+
+            yield opts if block_given?
+          end
+        end"
+Ronin::UI::CLI::Commands::Campaigns,print_resource,Arg,campaign,(String and [ description: () -> { { Ronin::UI::CLI::Commands::Campaigns#print_resource arg: campaign }#description call_ret: ret } ] and [ name: () -> { { Ronin::UI::CLI::Commands::Campaigns#print_resource arg: campaign }#name call_ret: ret } ] and [ organizations: () -> { { Ronin::UI::CLI::Commands::Campaigns#print_resource arg: campaign }#organizations call_ret: ret } ] and [ targets: () -> { { Ronin::UI::CLI::Commands::Campaigns#print_resource arg: campaign }#targets call_ret: ret } ]),Campaign,TS,Constraints,"def print_resource(campaign)
+            return super(campaign) unless verbose?
+
+            print_title campaign.name
+
+            indent do
+              if campaign.description
+                print_section 'Description' do
+                  campaign.description.each_line do |line|
+                    puts line
+                  end
+                end
+              end
+
+              unless campaign.organizations.empty?
+                print_array campaign.organizations, :title => 'Targeted Organizations'
+              end
+
+              unless campaign.targets.empty?
+                print_array campaign.targets, :title => 'Targets'
+              end
+            end
+          end"
+Ronin::UI::CLI::Commands::Creds,print_resource,Arg,cred,String,Credential,T,Constraints,"def print_resource(cred)
+            case cred
+            when ServiceCredential
+              puts ""#{cred}\t(#{cred.open_port.ip_address} #{cred.open_port})""
+            when WebCredential
+              puts ""#{cred}\t(#{cred.url})""
+            else
+              super(cred)
+            end
+          end"
+Ronin::UI::CLI::Commands::Exec,initialize,Arg,script,String,String,E,Constraints,"def initialize(script,arguments=[])
+            @script = script
+            @arguments = arguments
+          end"
+Ronin::UI::CLI::Commands::Exec,initialize,Arg,arguments,?Array<String>,Array<String>,E,Constraints,"def initialize(script,arguments=[])
+            @script = script
+            @arguments = arguments
+          end"
+Ronin::UI::CLI::Commands::Exec,initialize,Ret,"",self,self,E,,"def initialize(script,arguments=[])
+            @script = script
+            @arguments = arguments
+          end"
+[s]Ronin::UI::CLI::Commands::Exec,start,Arg,argv,?Array<String>,Array<String>,E,Constraints,"def self.start(argv=ARGV)
+            case argv[0]
+            when '-h', '--help', nil
+              puts ""Usage:\n  ronin-exec SCRIPT [ARGS...]\n\n""
+              puts ""Runs a script from a Ronin Repository""
+              return false
+            end
+
+            self.new(argv[0],argv[1..-1]).execute
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,fuzz_file,Arg,string,String,String,E,Constraints,"def fuzz_file(string,index)
+            path = ""#{@file_name}-#{index}#{@file_ext}""
+
+            print_info ""Creating file ##{index}: #{path} ...""
+
+            File.open(path,'wb') do |file|
+              file.write string
+            end
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,fuzz_file,Arg,index,String,Number,T,Twin,"def fuzz_file(string,index)
+            path = ""#{@file_name}-#{index}#{@file_ext}""
+
+            print_info ""Creating file ##{index}: #{path} ...""
+
+            File.open(path,'wb') do |file|
+              file.write string
+            end
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,fuzz_command,Arg,string,String,String,E,Constraints,"def fuzz_command(string,index)
+            RDL.type_cast(Tempfile, ""${File}"").open(""ronin-fuzzer-#{index}"") do |tempfile|
+              tempfile.write(string)
+              tempfile.flush
+
+              arguments = @command.map do |argument|
+                if argument.include?('#path#')
+                  argument.sub('#path#',tempfile.path)
+                elsif argument.include?('#string#')
+                  argument.sub('#string#',string)
+                else
+                  argument
+                end
+              end
+
+              print_info ""Running command #{index}: #{arguments.join(' ')} ...""
+
+              # run the command as it's own process
+              unless system(*arguments)
+                status = $?
+
+                if status.coredump?
+                  # jack pot!
+                  print_error ""Process ##{status.pid} coredumped!""
+                else
+                  # process errored out
+                  print_warning ""Process ##{status.pid} exited with status #{status.exitstatus}""
+                end
+              end
+            end
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,fuzz_command,Arg,index,String,Number,T,Twin,"def fuzz_command(string,index)
+            RDL.type_cast(Tempfile, ""${File}"").open(""ronin-fuzzer-#{index}"") do |tempfile|
+              tempfile.write(string)
+              tempfile.flush
+
+              arguments = @command.map do |argument|
+                if argument.include?('#path#')
+                  argument.sub('#path#',tempfile.path)
+                elsif argument.include?('#string#')
+                  argument.sub('#string#',string)
+                else
+                  argument
+                end
+              end
+
+              print_info ""Running command #{index}: #{arguments.join(' ')} ...""
+
+              # run the command as it's own process
+              unless system(*arguments)
+                status = $?
+
+                if status.coredump?
+                  # jack pot!
+                  print_error ""Process ##{status.pid} coredumped!""
+                else
+                  # process errored out
+                  print_warning ""Process ##{status.pid} exited with status #{status.exitstatus}""
+                end
+              end
+            end
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,fuzz_network,Arg,string,String,String,E,Twin,"def fuzz_network(string,index)
+            print_debug ""Connecting to #{@host}:#{@port} ...""
+            socket = RDL.type_cast(@socket_class, ""${TCPSocket} or ${UDPSocket}"").new(@host,@port)
+
+            print_info ""Sending message ##{index}: #{string.inspect} ...""
+            socket.write(string)
+            socket.flush
+
+            print_debug ""Disconnecting from #{@host}:#{@port} ...""
+            socket.close
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,fuzz_network,Arg,index,String,Number,T,Twin,"def fuzz_network(string,index)
+            print_debug ""Connecting to #{@host}:#{@port} ...""
+            socket = RDL.type_cast(@socket_class, ""${TCPSocket} or ${UDPSocket}"").new(@host,@port)
+
+            print_info ""Sending message ##{index}: #{string.inspect} ...""
+            socket.write(string)
+            socket.flush
+
+            print_debug ""Disconnecting from #{@host}:#{@port} ...""
+            socket.close
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,print_fuzz,Arg,string,String,String,E,Twin,"def print_fuzz(string,index)
+            print_debug ""String ##{index} ...""
+
+            puts string
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,print_fuzz,Arg,index,String,Number,T,Twin,"def print_fuzz(string,index)
+            print_debug ""String ##{index} ...""
+
+            puts string
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,parse_pattern,Arg,string,String,String,E,Twin,"def parse_pattern(string)
+            case string
+            when /^\/.+\/$/
+              Regexp.new(string[1..-2])
+            when /^[a-z][a-z_]+$/
+              const = string.upcase
+
+              if (Regexp.const_defined?(const) &&
+                  Regexp.const_get(const).kind_of?(Regexp))
+                Regexp.const_get(const)
+              else
+                string
+              end
+            else
+              string
+            end
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,parse_pattern,Ret,"",Object,(Regexp or String),T,Constraints,"def parse_pattern(string)
+            case string
+            when /^\/.+\/$/
+              Regexp.new(string[1..-2])
+            when /^[a-z][a-z_]+$/
+              const = string.upcase
+
+              if (Regexp.const_defined?(const) &&
+                  Regexp.const_get(const).kind_of?(Regexp))
+                Regexp.const_get(const)
+              else
+                string
+              end
+            else
+              string
+            end
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,parse_substitution,Arg,string,String,String,E,Twin,"def parse_substitution(string)
+            if string.include?('*')
+              string, lengths = string.split('*',2)
+
+              lengths = if lengths.include?('-')
+                          min, max = lengths.split('-',2)
+
+                          (min.to_i .. max.to_i)
+                        else
+                          lengths.to_i
+                        end
+
+              Fuzzing::Repeater.new(lengths).each(string)
+            else
+              Fuzzing[string]
+            end
+          end"
+Ronin::UI::CLI::Commands::Fuzzer,parse_substitution,Ret,"",String,Enumerator,T,Twin,"def parse_substitution(string)
+            if string.include?('*')
+              string, lengths = string.split('*',2)
+
+              lengths = if lengths.include?('-')
+                          min, max = lengths.split('-',2)
+
+                          (min.to_i .. max.to_i)
+                        else
+                          lengths.to_i
+                        end
+
+              Fuzzing::Repeater.new(lengths).each(string)
+            else
+              Fuzzing[string]
+            end
+          end"
+Ronin::UI::CLI::Commands::Hosts,print_resource,Arg,host,(String and [ address: () -> { { Ronin::UI::CLI::Commands::Hosts#print_resource arg: host }#address call_ret: ret } ] and [ email_addresses: () -> { { Ronin::UI::CLI::Commands::Hosts#print_resource arg: host }#email_addresses call_ret: ret } ] and [ ip_addresses: () -> { { Ronin::UI::CLI::Commands::Hosts#print_resource arg: host }#ip_addresses call_ret: ret } ] and [ last_scanned_at: () -> { { Ronin::UI::CLI::Commands::Hosts#print_resource arg: host }#last_scanned_at call_ret: ret } ] and [ open_ports: () -> { { Ronin::UI::CLI::Commands::Hosts#print_resource arg: host }#open_ports call_ret: ret } ] and [ organization: () -> { { Ronin::UI::CLI::Commands::Hosts#print_resource arg: host }#organization call_ret: ret } ] and [ urls: () -> { { Ronin::UI::CLI::Commands::Hosts#print_resource arg: host }#urls call_ret: ret } ]),HostName,TS,Constraints,"def print_resource(host)
+            return super(host) unless verbose?
+
+            print_title host.address
+
+            indent do
+              if (org = host.organization)
+                print_hash 'Organization' => org
+              end
+
+              if (last_scanned_at = host.last_scanned_at)
+                print_hash 'Last Scanned' => last_scanned_at
+              end
+
+              unless host.ip_addresses.empty?
+                print_array host.ip_addresses, :title => 'IP Addresses'
+              end
+
+              unless host.open_ports.empty?
+                print_section 'Open Ports' do
+                  host.open_ports.each do |port|
+                    if port.service
+                      puts ""#{port}\t#{port.service}""
+                    else
+                      puts port
+                    end
+                  end
+                end
+              end
+
+              unless host.email_addresses.empty?
+                print_array host.email_addresses, :title => 'Email Addresses'
+              end
+
+              unless host.urls.empty?
+                print_array host.urls, :title => 'URLs'
+              end
+            end
+          end"
+Ronin::UI::CLI::Commands::Ips,print_resource,Arg,ip,(String and [ address: () -> { { Ronin::UI::CLI::Commands::Ips#print_resource arg: ip }#address call_ret: ret } ] and [ host_names: () -> { { Ronin::UI::CLI::Commands::Ips#print_resource arg: ip }#host_names call_ret: ret } ] and [ last_scanned_at: () -> { { Ronin::UI::CLI::Commands::Ips#print_resource arg: ip }#last_scanned_at call_ret: ret } ] and [ mac_addresses: () -> { { Ronin::UI::CLI::Commands::Ips#print_resource arg: ip }#mac_addresses call_ret: ret } ] and [ open_ports: () -> { { Ronin::UI::CLI::Commands::Ips#print_resource arg: ip }#open_ports call_ret: ret } ] and [ organization: () -> { { Ronin::UI::CLI::Commands::Ips#print_resource arg: ip }#organization call_ret: ret } ]),IPAddress,TS,Constraints,"def print_resource(ip)
+            return super(ip) unless verbose?
+
+            print_title ip.address
+
+            indent do
+              if (org = ip.organization)
+                print_hash 'Organization' => org
+              end
+
+              if (last_scanned_at = ip.last_scanned_at)
+                print_hash 'Last Scanned' => last_scanned_at
+              end
+
+              unless ip.mac_addresses.empty?
+                print_array ip.mac_addresses, :title => 'MAC Addresses'
+              end
+
+              unless ip.host_names.empty?
+                print_array ip.host_names, :title => 'Hostnames'
+              end
+
+              unless ip.open_ports.empty?
+                print_section 'Open Ports' do
+                  ip.open_ports.each do |port|
+                    if port.service
+                      puts ""#{port}\t#{port.service}""
+                    else
+                      puts port
+                    end
+                  end
+                end
+              end
+            end
+          end"
+Ronin::UI::CLI::Commands::Repos,print_repository,Arg,repo,([ description: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#description call_ret: ret } ] and [ domain: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#domain call_ret: ret } ] and [ executables: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#executables call_ret: ret } ] and [ installed?: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#installed? call_ret: ret } ] and [ name: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#name call_ret: ret } ] and [ path: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#path call_ret: ret } ] and [ scm: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#scm call_ret: ret } ] and [ script_paths: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#script_paths call_ret: ret } ] and [ source: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#source call_ret: ret } ] and [ title: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#title call_ret: ret } ] and [ uri: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#uri call_ret: ret } ] and [ verbose?: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#verbose? call_ret: ret } ] and [ website: () -> { { Ronin::UI::CLI::Commands::Repos#print_repository arg: repo }#website call_ret: ret } ]),Repository,TS,Constraints,"def print_repository(repo)
+            print_title repo.name
+
+            indent do
+              if repo.installed?
+                puts ""Domain: #{repo.domain}""
+              else
+                puts ""Path: #{repo.path}""
+              end
+
+              puts ""SCM: #{repo.scm}"" if repo.scm
+
+              if repo.verbose?
+                putc ""\n""
+
+                puts ""Title: #{repo.title}"" if repo.title
+                puts ""URI: #{repo.uri}"" if repo.uri
+                puts ""Source URI: #{repo.source}"" if repo.source
+                puts ""Website: #{repo.website}"" if repo.website
+
+                executables = repo.executables
+
+                unless executables.empty?
+                  puts ""Executables: #{executables.join(', ')}""
+                end
+
+                putc ""\n""
+
+                unless repo.script_paths.empty?
+                  print_title 'Cached Files'
+
+                  indent do
+                    repo.script_paths.each do |script_path|
+                      puts script_path.path
+                    end
+                  end
+                end
+
+                if repo.description
+                  print_title ""Description""
+
+                  indent { puts ""#{repo.description}\n\n"" }
+                else
+                  putc ""\n""
+                end
+              else
+                putc ""\n""
+              end
+            end
+          end"
+Ronin::UI::CLI::Commands::Update,print_cache_errors,Arg,repository,[ script_paths: () -> { { Ronin::UI::CLI::Commands::Update#print_cache_errors arg: repository }#script_paths call_ret: ret } ],Repository,TS,Constraints,"def print_cache_errors(repository)
+            repository.script_paths.each do |script_path|
+              if script_path.cache_exception
+                print_exception script_path.cache_exception
+              end
+
+              if script_path.cache_errors
+                script_path.cache_errors.each do |error|
+                  print_error error
+                end
+              end
+            end
+          end"
+Ronin::UI::CLI::Commands::Urls,print_resource,Arg,url,(String and [ fragment: () -> { { Ronin::UI::CLI::Commands::Urls#print_resource arg: url }#fragment call_ret: ret } ] and [ host_name: () -> { { Ronin::UI::CLI::Commands::Urls#print_resource arg: url }#host_name call_ret: ret } ] and [ last_scanned_at: () -> { { Ronin::UI::CLI::Commands::Urls#print_resource arg: url }#last_scanned_at call_ret: ret } ] and [ path: () -> { { Ronin::UI::CLI::Commands::Urls#print_resource arg: url }#path call_ret: ret } ] and [ port: () -> { { Ronin::UI::CLI::Commands::Urls#print_resource arg: url }#port call_ret: ret } ] and [ query_params: () -> { { Ronin::UI::CLI::Commands::Urls#print_resource arg: url }#query_params call_ret: ret } ]),Ronin::URL,TS,Constraints,"def print_resource(url)
+            return super(url) unless verbose?
+
+            print_title url
+
+            indent do
+              print_hash 'Host' => url.host_name,
+                         'Port' => url.port.number,
+                         'Path' => url.path,
+                         'Fragment' => url.fragment,
+                         'Last Scanned' => url.last_scanned_at
+
+              unless url.query_params.empty?
+                params = {}
+
+                url.query_params.each do |param|
+                  params[param.name] = param.value
+                end
+
+                print_hash params, :title => 'Query Params'
+              end
+            end
+          end"
+Ronin::UI::CLI::Commands::Wordlist,parse_template,Ret,"",Array<u>,Array<(Array<(Number or Symbol)> or Array<String> or String)>,P,Constraints,"def parse_template
+            @template.map do |char_template|
+              if char_template.include?(':')
+                charset, length = char_template.split(':',2)
+
+                # convert charset names to Symbols
+                charset = if charset.include?(',')
+                            charset.split(',')
+                          elsif Chars.const_defined?(charset.upcase)
+                            charset.to_sym
+                          else
+                            charset.to_s
+                          end
+
+                # parse the length field
+                length = if length.include?('-')
+                           min, max = length.split('-',2)
+
+                           Range.new(min.to_i,max.to_i)
+                         elsif length.include?(',')
+                           length.split(',').map(&:to_i)
+                         else
+                           length.to_i
+                         end
+
+                [charset, length]
+              else
+                char_template
+              end
+            end
+          end"
+Ronin::UI::CLI::Commands::Wordlist,wordlist,Ret,"",Ronin::Wordlist,Ronin::Wordlist,E,Constraints,"def wordlist
+            if template?
+              generator = Fuzzing::Template.new(parse_template)
+
+              Ronin::Wordlist.new(generator,@mutations)
+            elsif input?
+              Ronin::Wordlist.build(File.open(@input),@mutations)
+            else
+              Ronin::Wordlist.build($stdin,@mutations)
+            end
+          end"
+Total # E:,164
+Total # P:,43
+Total # T:,82
+Total # TS:,24
+Total # N:,30
+Total # return types:,202
+Total # arg types:,141
+Total # var types:,0
+Total # individual types:,367

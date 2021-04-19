@@ -104,13 +104,13 @@ module Ronin
 
       ::URI.extract(text) do |uri|
         uri = begin
-                ::URI.parse(uri)
+                ::URI.parse(RDL.type_cast(uri, "String"))
               rescue URI::InvalidURIError
                 # URI.extract can parse URIs that URI.parse cannot handle
                 next
               end
 
-        yield from(uri)
+        yield from(RDL.type_cast(uri, "URI::HTTP"))
       end
 
       return nil
@@ -209,7 +209,7 @@ module Ronin
     # @api public
     #
     def self.extension(ext)
-      all(:path => "%.#{ext}")
+      RDL.type_cast(all(:path => "%.#{ext}"), "Array<URL>")
     end
 
     #

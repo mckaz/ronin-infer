@@ -726,7 +726,7 @@ module Ronin
       self.authors.clear
 
       if File.file?(metadata_path)
-        metadata = YAML.load_file(metadata_path)
+        metadata = RDL.type_cast(YAML.load_file(metadata_path), "Hash<String, String>")
 
         if (title = metadata['title'])
           self.title = title
@@ -754,11 +754,11 @@ module Ronin
 
         case metadata['authors']
         when Hash
-          metadata['authors'].each do |name,email|
+          RDL.type_cast(metadata['authors'], "Hash<String, String>").each do |name,email|
             self.authors << Author.first_or_new(:name => name, :email => email)
           end
         when Array
-          metadata['authors'].each do |name|
+          RDL.type_cast(metadata['authors'], "Array<String>").each do |name|
             self.authors << Author.first_or_new(:name => name)
           end
         end

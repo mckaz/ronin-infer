@@ -191,9 +191,9 @@ module Ronin
 
         if gemspec_path
           # switch into the gem directory, before loading the gemspec
-          gem = Dir.chdir(root_dir) do
+          gem = RDL.type_cast(Dir.chdir(root_dir) do
             Gem::Specification.load(gemspec_path)
-          end
+          end, "Gem::Specification")
 
           # do not add duplicate ronin gems
           unless @gems.has_key?(gem.name)

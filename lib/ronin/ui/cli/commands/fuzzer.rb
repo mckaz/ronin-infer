@@ -178,7 +178,7 @@ module Ronin
           #   The iteration number.
           #
           def fuzz_command(string,index)
-            Tempfile.open("ronin-fuzzer-#{index}") do |tempfile|
+            RDL.type_cast(Tempfile, "${File}").open("ronin-fuzzer-#{index}") do |tempfile|
               tempfile.write(string)
               tempfile.flush
 
@@ -220,7 +220,7 @@ module Ronin
           #
           def fuzz_network(string,index)
             print_debug "Connecting to #{@host}:#{@port} ..."
-            socket = @socket_class.new(@host,@port)
+            socket = RDL.type_cast(@socket_class, "${TCPSocket} or ${UDPSocket}").new(@host,@port)
 
             print_info "Sending message ##{index}: #{string.inspect} ..."
             socket.write(string)

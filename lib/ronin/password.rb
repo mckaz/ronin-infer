@@ -104,7 +104,7 @@ module Ronin
                        raise(ArgumentError,"Unknown Digest algorithm #{algorithm}")
                      end
 
-      hash = digest_class.new
+      hash = RDL.type_cast(digest_class, "Class").new
 
       if options[:prepend_salt]
         hash << options[:prepend_salt].to_s

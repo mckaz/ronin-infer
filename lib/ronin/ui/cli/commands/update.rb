@@ -74,12 +74,12 @@ module Ronin
           #
           def execute
             if repo?
-              repository = begin
+              repository = RDL.type_cast(begin
                              Repository.find(@repo)
                            rescue RepositoryNotFound => e
                              print_error e.message
                              exit -1
-                           end
+                           end, "Ronin::Repository")
 
               print_info "Updating #{repository} ..."
 

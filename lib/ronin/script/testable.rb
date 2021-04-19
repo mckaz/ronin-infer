@@ -59,11 +59,11 @@ module Ronin
       # @api semipublic
       #
       def test!
-        print_info "Testing #{self.class.short_name} ..."
+        print_info "Testing #{RDL.type_cast(self.class, "Ronin::Script::ClassMethods").short_name} ..."
 
         @test_blocks.each { |block| block.call() }
 
-        print_info "#{self.class.short_name} tested!"
+        print_info "#{RDL.type_cast(self.class, "Ronin::Script::ClassMethods").short_name} tested!"
         return true
       end
 
@@ -153,7 +153,7 @@ module Ronin
         name = name.to_sym
 
         test do
-          actual_value = self.send(name)
+          actual_value = RDL.type_cast(self.send(name), "Object")
           message ||= "#{name} (#{actual_value.inspect}) must equal #{expected_value.inspect}"
 
           flunk(message) unless actual_value == expected_value
@@ -186,7 +186,7 @@ module Ronin
         name = name.to_sym
 
         test do
-          actual_value = self.send(name)
+          actual_value = RDL.type_cast(self.send(name), "Object")
           message ||= "#{name} (#{actual_value.inspect}) cannot equal #{unexpected_value.inspect}"
 
           flunk(message) unless actual_value != unexpected_value
@@ -216,7 +216,7 @@ module Ronin
         name = name.to_sym
 
         test do
-          actual_value = self.send(name)
+          actual_value = RDL.type_cast(self.send(name), "Object")
           message ||= "#{name} is not set"
 
           blank = if actual_value.respond_to?(:empty?)
@@ -255,7 +255,7 @@ module Ronin
         name = name.to_sym
 
         test do
-          actual_value = self.send(name)
+          actual_value = RDL.type_cast(self.send(name), "String")
           message ||= "#{name} (#{actual_value.inspect}) must match #{pattern.inspect}"
 
           flunk(message) unless actual_value.match(pattern)
@@ -288,7 +288,7 @@ module Ronin
         name = name.to_sym
 
         test do
-          actual_value = self.send(name)
+          actual_value = RDL.type_cast(self.send(name), "String")
           message ||= "#{name} (#{actual_value.inspect}) cannot match #{pattern.inspect}"
 
           flunk(message) unless !actual_value.match(pattern)
@@ -321,7 +321,7 @@ module Ronin
         name = name.to_sym
 
         test do
-          actual_value = self.send(name)
+          actual_value = RDL.type_cast(self.send(name), "String")
           message ||= "#{name} (#{actual_value.inspect}) must be one of #{expected_values.inspect}"
 
           flunk(message) unless expected_values.include?(actual_value)
@@ -354,7 +354,7 @@ module Ronin
         name = name.to_sym
 
         test do
-          actual_value = self.send(name)
+          actual_value = RDL.type_cast(self.send(name), "String")
           message ||= "#{name} (#{actual_value.inspect}) cannot be one of #{unexpected_values.inspect}"
 
           flunk(message) unless !unexpected_values.include?(actual_value)
