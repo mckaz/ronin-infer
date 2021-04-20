@@ -1,24 +1,24 @@
 # typed: strong
 class [s]Ronin
   class Address
-    # RDL Type: (String) -> Ronin::Script::Testable
-    sig { params(address: String).returns(Ronin::Script::Testable) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(address: T.untyped).returns(T.untyped) }
     def parse(address); end
   end
 
   class Campaign
-    # RDL Type: (String) -> Array<URL>
-    sig { params(addr: String).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(addr: T.untyped).returns(T.untyped) }
     def targeting(addr); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(names: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(names: T.untyped).returns(T.untyped) }
     def targeting_orgs(names); end
   end
 
   class Config
-    # RDL Type: (?String) -> (false or nil or true)
-    sig { params(name: String).returns(T.any(FalseClass, NilClass, TrueClass)) }
+    # RDL Type: (?XXX) -> (false or nil or true)
+    sig { params(name: T.untyped).returns(T.any(FalseClass, NilClass, TrueClass)) }
     def load(name = nil); end
 
     # RDL Type: (?((Array<String> or File or [ to_str: () -> String ]))) -> String
@@ -27,64 +27,64 @@ class [s]Ronin
   end
 
   class Credential
-    # RDL Type: (String) -> Array<URL>
-    sig { params(name: String).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(name: T.untyped).returns(T.untyped) }
     def for_user(name); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(password: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(password: T.untyped).returns(T.untyped) }
     def with_password(password); end
   end
 
   class EmailAddress
-    # RDL Type: (String) {((false or true)) -> XXX} -> Array<%any>
-    sig { params(text: String).returns(T::Array[T.nilable(BasicObject)]) }
+    # RDL Type: (XXX) {(XXX) -> XXX} -> Array<%any>
+    sig { params(text: T.untyped).returns(T::Array[T.nilable(BasicObject)]) }
     def extract(text); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(names: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(names: T.untyped).returns(T.untyped) }
     def with_hosts(names); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(ips: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(ips: T.untyped).returns(T.untyped) }
     def with_ips(ips); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(names: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(names: T.untyped).returns(T.untyped) }
     def with_users(names); end
 
-    # RDL Type: (String) -> (false or true)
-    sig { params(email: String).returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: (([ dump: () -> XXX ] and [ split: (String, Number) -> XXX ])) -> XXX
+    sig { params(email: T.untyped).returns(T.untyped) }
     def parse(email); end
 
-    # RDL Type: (String) -> (false or true)
-    sig { params(email: String).returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: (([ dump: () -> XXX ] and [ split: (String, Number) -> XXX ] and [ to_s: () -> String ])) -> XXX
+    sig { params(email: T.untyped).returns(T.untyped) }
     def from(email); end
   end
 
   class HostName
-    # RDL Type: (String) {(Ronin::Script::Testable) -> XXX} -> Array<%any>
-    sig { params(text: String).returns(T::Array[T.nilable(BasicObject)]) }
+    # RDL Type: (XXX) {(XXX) -> XXX} -> Array<%any>
+    sig { params(text: T.untyped).returns(T::Array[T.nilable(BasicObject)]) }
     def extract(text); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(ips: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(ips: T.untyped).returns(T.untyped) }
     def with_ips(ips); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(numbers: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(numbers: T.untyped).returns(T.untyped) }
     def with_ports(numbers); end
 
-    # RDL Type: (String) -> Array<URL>
-    sig { params(name: String).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(name: T.untyped).returns(T.untyped) }
     def tld(name); end
 
-    # RDL Type: (String) -> XXX
-    sig { params(name: String).returns(T.untyped) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(name: T.untyped).returns(T.untyped) }
     def domain(name); end
 
-    # RDL Type: (String, ?XXX) -> Array<XXX>
-    sig { params(addr: String, nameserver: T.untyped).returns(T::Array[T.untyped]) }
+    # RDL Type: ([ to_s: () -> String ], ?XXX) -> Array<XXX>
+    sig { params(addr: T.untyped, nameserver: T.untyped).returns(T::Array[T.untyped]) }
     def lookup(addr, nameserver = nil); end
   end
 
@@ -93,8 +93,8 @@ class [s]Ronin
     sig { returns(T.untyped) }
     def gems; end
 
-    # RDL Type: () -> Array<String>
-    sig { returns(T::Array[String]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def paths; end
 
     # RDL Type: () -> XXX
@@ -105,8 +105,8 @@ class [s]Ronin
     sig { params(pattern: T.untyped).returns(T::Enumerator[T.nilable(BasicObject)]) }
     def each_file(pattern); end
 
-    # RDL Type: (String, ?String) {([ chomp: (String) -> XXX ]) -> XXX} -> Enumerator<%any>
-    sig { params(directory: String, ext: String).returns(T::Enumerator[T.nilable(BasicObject)]) }
+    # RDL Type: (XXX, ?XXX) {([ chomp: (String) -> XXX ]) -> XXX} -> Enumerator<%any>
+    sig { params(directory: T.untyped, ext: T.untyped).returns(T::Enumerator[T.nilable(BasicObject)]) }
     def each_file_in(directory, ext = nil); end
 
     # RDL Type: () -> (false or true)
@@ -123,60 +123,60 @@ class [s]Ronin
   end
 
   class IPAddress
-    # RDL Type: (String, ?String) {(Ronin::Script::Testable) -> XXX} -> Array<%any>
-    sig { params(text: String, version: String).returns(T::Array[T.nilable(BasicObject)]) }
+    # RDL Type: (XXX, ?XXX) {(XXX) -> XXX} -> Array<%any>
+    sig { params(text: T.untyped, version: T.untyped).returns(T::Array[T.nilable(BasicObject)]) }
     def extract(text, version = nil); end
 
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def v4; end
 
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def v6; end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(macs: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(macs: T.untyped).returns(T.untyped) }
     def with_macs(macs); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(names: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(names: T.untyped).returns(T.untyped) }
     def with_hosts(names); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(numbers: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(numbers: T.untyped).returns(T.untyped) }
     def with_ports(numbers); end
 
-    # RDL Type: (String, ?XXX) -> Array<XXX>
-    sig { params(name: String, nameserver: T.untyped).returns(T::Array[T.untyped]) }
+    # RDL Type: (XXX, ?XXX) -> Array<XXX>
+    sig { params(name: T.untyped, nameserver: T.untyped).returns(T::Array[T.untyped]) }
     def lookup(name, nameserver = nil); end
   end
 
   class MACAddress
-    # RDL Type: (String) {(Ronin::Script::Testable) -> XXX} -> Array<%any>
-    sig { params(text: String).returns(T::Array[T.nilable(BasicObject)]) }
+    # RDL Type: (XXX) {(XXX) -> XXX} -> Array<%any>
+    sig { params(text: T.untyped).returns(T::Array[T.nilable(BasicObject)]) }
     def extract(text); end
   end
 
   class Password
-    # RDL Type: ([ to_s: () -> String ]) -> Ronin::Script::Testable
-    sig { params(password: T.untyped).returns(Ronin::Script::Testable) }
+    # RDL Type: ([ to_s: () -> String ]) -> XXX
+    sig { params(password: T.untyped).returns(T.untyped) }
     def parse(password); end
   end
 
   class Port
-    # RDL Type: (XXX) -> Ronin::Script::Testable
-    sig { params(number: T.untyped).returns(Ronin::Script::Testable) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(number: T.untyped).returns(T.untyped) }
     def from(number); end
 
-    # RDL Type: (String) -> Ronin::Script::Testable
-    sig { params(number: String).returns(Ronin::Script::Testable) }
+    # RDL Type: ([ to_i: () -> Number ]) -> XXX
+    sig { params(number: T.untyped).returns(T.untyped) }
     def parse(number); end
   end
 
   class Repository
-    # RDL Type: (String) -> XXX
-    sig { params(name: String).returns(T.untyped) }
+    # RDL Type: (([ dump: () -> XXX ] and [ to_s: () -> String ])) -> XXX
+    sig { params(name: T.untyped).returns(T.untyped) }
     def find(name); end
 
     # RDL Type: (?([ []: (:path) -> XXX ] and [ has_key?: (:path) -> XXX ] and [ merge: ({ path: Pathname, installed: (false or true), domain: String }) -> XXX ])) -> Ronin::Repository
@@ -187,16 +187,16 @@ class [s]Ronin
     sig { params(options: T.untyped).returns(Ronin::Repository) }
     def install(options = nil); end
 
-    # RDL Type: () {([ update!: () -> XXX ]) -> XXX} -> Ronin::Script::Testable
-    sig { returns(Ronin::Script::Testable) }
+    # RDL Type: () {([ update!: () -> XXX ]) -> XXX} -> XXX
+    sig { returns(T.untyped) }
     def update!; end
 
-    # RDL Type: (String) -> Ronin::Script::Testable
-    sig { params(name: String).returns(Ronin::Script::Testable) }
+    # RDL Type: (([ dump: () -> XXX ] and [ to_s: () -> String ])) -> XXX
+    sig { params(name: T.untyped).returns(T.untyped) }
     def uninstall(name); end
 
-    # RDL Type: () -> Enumerator<t>
-    sig { returns(T::Enumerator[T.untyped]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def activate!; end
 
     # RDL Type: () -> Enumerator<t>
@@ -205,56 +205,56 @@ class [s]Ronin
   end
 
   class URL
-    # RDL Type: (String) {((false or true)) -> XXX} -> Array<%any>
+    # RDL Type: (String) {(XXX) -> XXX} -> Array<%any>
     sig { params(text: String).returns(T::Array[T.nilable(BasicObject)]) }
     def extract(text); end
 
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def http; end
 
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def https; end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(names: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(names: T.untyped).returns(T.untyped) }
     def hosts(names); end
 
-    # RDL Type: (XXX) -> Array<URL>
-    sig { params(numbers: T.untyped).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(numbers: T.untyped).returns(T.untyped) }
     def ports(numbers); end
 
-    # RDL Type: (String) -> Array<URL>
-    sig { params(root_dir: String).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(root_dir: T.untyped).returns(T.untyped) }
     def directory(root_dir); end
 
-    # RDL Type: (String) -> Array<URL>
-    sig { params(ext: String).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> Array<URL>
+    sig { params(ext: T.untyped).returns(T::Array[URL]) }
     def extension(ext); end
 
-    # RDL Type: (String) -> Array<URL>
-    sig { params(name: String).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(name: T.untyped).returns(T.untyped) }
     def with_query_param(name); end
 
-    # RDL Type: (String) -> Array<URL>
-    sig { params(value: String).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(value: T.untyped).returns(T.untyped) }
     def with_query_value(value); end
 
-    # RDL Type: (String) -> Array<URL>
-    sig { params(name: String).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(name: T.untyped).returns(T.untyped) }
     def query_param(name); end
 
-    # RDL Type: (String) -> Array<URL>
-    sig { params(value: String).returns(T::Array[URL]) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(value: T.untyped).returns(T.untyped) }
     def query_value(value); end
 
-    # RDL Type: (([ fragment: () -> XXX ] and [ host: () -> XXX ] and [ path: () -> XXX ] and [ port: () -> XXX ] and [ query_params: () -> XXX ] and [ respond_to?: (:query_params) -> XXX ] and [ scheme: () -> XXX ])) -> (false or true)
-    sig { params(uri: T.untyped).returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: (([ fragment: () -> XXX ] and [ host: () -> XXX ] and [ path: () -> XXX ] and [ port: () -> XXX ] and [ query_params: () -> XXX ] and [ respond_to?: (:query_params) -> XXX ] and [ scheme: () -> XXX ])) -> XXX
+    sig { params(uri: T.untyped).returns(T.untyped) }
     def from(uri); end
 
-    # RDL Type: (String) -> (false or true)
-    sig { params(url: String).returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: (String) -> XXX
+    sig { params(url: String).returns(T.untyped) }
     def parse(url); end
 
     # RDL Type: ([ path: () -> XXX ]) -> String
@@ -263,8 +263,8 @@ class [s]Ronin
   end
 
   class WebCredential
-    # RDL Type: (String) -> (false or true)
-    sig { params(email: String).returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: (([ dump: () -> XXX ] and [ include?: (String) -> XXX ] and [ split: (String, Number) -> XXX ])) -> XXX
+    sig { params(email: T.untyped).returns(T.untyped) }
     def with_email(email); end
   end
 
@@ -273,8 +273,8 @@ class [s]Ronin
     sig { returns(T.untyped) }
     def repositories; end
 
-    # RDL Type: (String) -> (false or true)
-    sig { params(name: String).returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: ([ to_sym: () -> XXX ]) -> XXX
+    sig { params(name: T.untyped).returns(T.untyped) }
     def repository?(name); end
 
     # RDL Type: () {() -> XXX} -> (false or true)
@@ -289,15 +289,15 @@ class [s]Ronin
     sig { returns(T.any(FalseClass, TrueClass)) }
     def upgrade!; end
 
-    # RDL Type: (?String) -> (false or true)
-    sig { params(uri: String).returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: (?XXX) -> (false or true)
+    sig { params(uri: T.untyped).returns(T.any(FalseClass, TrueClass)) }
     def setup(uri = nil); end
 
-    # RDL Type: (XXX) {XXX} -> String
-    sig { params(name: T.untyped).returns(String) }
+    # RDL Type: ([ to_sym: () -> XXX ]) {XXX} -> XXX
+    sig { params(name: T.untyped).returns(T.untyped) }
     def repository(name); end
 
-    # RDL Type: (XXX) {() -> XXX} -> nil
+    # RDL Type: ([ to_sym: () -> XXX ]) {() -> XXX} -> nil
     sig { params(name: T.untyped).void }
     def clear(name); end
 
@@ -313,8 +313,8 @@ class [s]Ronin
   end
 
   class Script
-    # RDL Type: (String) -> Ronin::Script::Testable
-    sig { params(path: String).returns(Ronin::Script::Testable) }
+    # RDL Type: (([ dump: () -> XXX ] and [ to_str: () -> String ])) -> XXX
+    sig { params(path: T.untyped).returns(T.untyped) }
     def load_from(path); end
   end
 
@@ -324,59 +324,59 @@ class [s]Ronin
       sig { returns(T.untyped) }
       def commands; end
 
-      # RDL Type: (String) -> XXX
-      sig { params(name: String).returns(T.untyped) }
+      # RDL Type: (([ dump: () -> XXX ] and [ to_s: () -> String ] and [ tr: (String, String) -> XXX ])) -> XXX
+      sig { params(name: T.untyped).returns(T.untyped) }
       def command(name); end
 
-      # RDL Type: (?Array<String>) -> (false or true)
-      sig { params(argv: T::Array[String]).returns(T.any(FalseClass, TrueClass)) }
+      # RDL Type: (?([ []: (Range<Number>) -> XXX ] and [ first: () -> XXX ])) -> (false or true)
+      sig { params(argv: T.untyped).returns(T.any(FalseClass, TrueClass)) }
       def start(argv = nil); end
 
       class ClassCommand
-        # RDL Type: (?String) -> Symbol
-        sig { params(name: String).returns(Symbol) }
+        # RDL Type: (?[ to_sym: () -> XXX ]) -> Symbol
+        sig { params(name: T.untyped).returns(Symbol) }
         def class_name(name = nil); end
 
-        # RDL Type: () -> Symbol
-        sig { returns(Symbol) }
+        # RDL Type: () -> XXX
+        sig { returns(T.untyped) }
         def command_class; end
       end
 
       class Command
-        # RDL Type: () -> Symbol
-        sig { returns(Symbol) }
+        # RDL Type: () -> XXX
+        sig { returns(T.untyped) }
         def command_name; end
 
-        # RDL Type: (?Array<String>) -> (false or true)
-        sig { params(argv: T::Array[String]).returns(T.any(FalseClass, TrueClass)) }
+        # RDL Type: (?XXX) -> (false or true)
+        sig { params(argv: T.untyped).returns(T.any(FalseClass, TrueClass)) }
         def start(argv = nil); end
 
-        # RDL Type: (?Hash<:import, { flag: XXX, usage: XXX }>) -> (false or true)
-        sig { params(options: T::Hash[Symbol, T.untyped]).returns(T.any(FalseClass, TrueClass)) }
+        # RDL Type: (?XXX) -> (false or true)
+        sig { params(options: T.untyped).returns(T.any(FalseClass, TrueClass)) }
         def run(options = nil); end
 
         # RDL Type: () -> Hash<:import, { flag: XXX, usage: XXX }>
         sig { returns(T::Hash[Symbol, T.untyped]) }
         def options; end
 
-        # RDL Type: (:import, ?([ []: (:flag) -> XXX ] and [ []: (:usage) -> XXX ])) -> String
-        sig { params(name: Symbol, options: T.untyped).returns(String) }
+        # RDL Type: (:import, ?([ []: (:flag) -> XXX ] and [ []: (:usage) -> XXX ])) -> XXX
+        sig { params(name: Symbol, options: T.untyped).returns(T.untyped) }
         def option(name, options = nil); end
 
-        # RDL Type: () -> (false or true)
-        sig { returns(T.any(FalseClass, TrueClass)) }
+        # RDL Type: () -> XXX
+        sig { returns(T.untyped) }
         def options?; end
 
-        # RDL Type: () -> Array<Symbol>
-        sig { returns(T::Array[Symbol]) }
+        # RDL Type: () -> Array<XXX>
+        sig { returns(T::Array[T.untyped]) }
         def arguments; end
 
-        # RDL Type: (String, ?Hash<:import, { flag: XXX, usage: XXX }>) -> String
-        sig { params(name: String, options: T::Hash[Symbol, T.untyped]).returns(String) }
+        # RDL Type: ([ to_sym: () -> XXX ], ?XXX) -> XXX
+        sig { params(name: T.untyped, options: T.untyped).returns(T.untyped) }
         def argument(name, options = nil); end
 
-        # RDL Type: () -> (false or true)
-        sig { returns(T.any(FalseClass, TrueClass)) }
+        # RDL Type: () -> XXX
+        sig { returns(T.untyped) }
         def arguments?; end
       end
 
@@ -385,14 +385,14 @@ class [s]Ronin
         sig { returns(T::Array[Symbol]) }
         def query_options; end
 
-        # RDL Type: (:import, ?([ []: (:flag) -> XXX ] and [ []: (:usage) -> XXX ])) -> String
-        sig { params(name: Symbol, options: T.untyped).returns(String) }
+        # RDL Type: (:import, ?([ []: (:flag) -> XXX ] and [ []: (:usage) -> XXX ])) -> XXX
+        sig { params(name: Symbol, options: T.untyped).returns(T.untyped) }
         def query_option(name, options = nil); end
       end
 
       class ResourcesCommand
-        # RDL Type: (?String) -> XXX
-        sig { params(model: String).returns(T.untyped) }
+        # RDL Type: (?[ <: (Module) -> XXX ]) -> XXX
+        sig { params(model: T.untyped).returns(T.untyped) }
         def model(model = nil); end
       end
 
@@ -404,8 +404,8 @@ class [s]Ronin
 
       class Commands
         class Exec
-          # RDL Type: (?Array<String>) -> (false or true)
-          sig { params(argv: T::Array[String]).returns(T.any(FalseClass, TrueClass)) }
+          # RDL Type: (?([ []: (Number) -> XXX ] and [ []: (Range<Number>) -> XXX ])) -> (false or true)
+          sig { params(argv: T.untyped).returns(T.any(FalseClass, TrueClass)) }
           def start(argv = nil); end
         end
       end
@@ -414,8 +414,8 @@ class [s]Ronin
 end
 
 module Ronin
-  # RDL Type: (String) -> Ronin::Script::Testable
-  sig { params(path: String).returns(Ronin::Script::Testable) }
+  # RDL Type: (([ dump: () -> XXX ] and [ to_str: () -> String ])) -> XXX
+  sig { params(path: T.untyped).returns(T.untyped) }
   def script(path); end
 
   class Address
@@ -435,22 +435,22 @@ module Ronin
   end
 
   class Campaign
-    # RDL Type: (String) -> (false or true)
-    sig { params(address: String).returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(address: T.untyped).returns(T.untyped) }
     def targets?(address); end
 
-    # RDL Type: (String) -> (false or true)
-    sig { params(addr: String).returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: ([ dump: () -> XXX ]) -> XXX
+    sig { params(addr: T.untyped).returns(T.untyped) }
     def target!(addr); end
   end
 
   class Credential
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> nil
+    sig { void }
     def user; end
 
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> nil
+    sig { void }
     def clear_text; end
 
     # RDL Type: () -> String
@@ -459,12 +459,12 @@ module Ronin
   end
 
   class EmailAddress
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> nil
+    sig { void }
     def user; end
 
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> nil
+    sig { void }
     def host; end
 
     # RDL Type: () -> String
@@ -481,12 +481,12 @@ module Ronin
     sig { params(nameserver: T.untyped).returns(T::Array[T.untyped]) }
     def lookup!(nameserver = nil); end
 
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def recent_ip_address; end
 
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> nil
+    sig { void }
     def last_scanned_at; end
   end
 
@@ -495,24 +495,24 @@ module Ronin
     sig { params(nameserver: T.untyped).returns(T::Array[T.untyped]) }
     def lookup!(nameserver = nil); end
 
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def recent_mac_address; end
 
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def recent_host_name; end
 
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def recent_os_guess; end
 
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> nil
+    sig { void }
     def last_scanned_at; end
 
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def to_ip; end
 
     # RDL Type: () -> Number
@@ -521,22 +521,22 @@ module Ronin
   end
 
   class MACAddress
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def recent_ip_address; end
 
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def to_i; end
   end
 
   class OpenPort
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def address; end
 
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def number; end
 
     # RDL Type: () -> Number
@@ -549,8 +549,8 @@ module Ronin
   end
 
   class OS
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> nil
+    sig { void }
     def recent_ip_address; end
 
     # RDL Type: () -> String
@@ -559,16 +559,16 @@ module Ronin
   end
 
   class Password
-    # RDL Type: (String, ?([ []: (:append_salt) -> XXX ] and [ []: (:prepend_salt) -> XXX ])) -> String
-    sig { params(algorithm: String, options: T.untyped).returns(String) }
+    # RDL Type: ([ to_s: () -> String ], ?([ []: (:append_salt) -> XXX ] and [ []: (:prepend_salt) -> XXX ])) -> XXX
+    sig { params(algorithm: T.untyped, options: T.untyped).returns(T.untyped) }
     def digest(algorithm, options = nil); end
 
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def count; end
 
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def to_s; end
 
     # RDL Type: () -> String
@@ -595,8 +595,8 @@ module Ronin
     sig { returns(T.any(FalseClass, TrueClass)) }
     def local?; end
 
-    # RDL Type: () -> (false or true)
-    sig { returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def remote?; end
 
     # RDL Type: () -> Array<String>
@@ -615,8 +615,8 @@ module Ronin
     sig { returns(T.any(FalseClass, TrueClass)) }
     def deactivate!; end
 
-    # RDL Type: ((Array<String> or File or [ to_str: () -> String ])) -> String
-    sig { params(sub_path: T.untyped).returns(String) }
+    # RDL Type: ((Array<String> or File or [ to_str: () -> String ])) -> XXX
+    sig { params(sub_path: T.untyped).returns(T.untyped) }
     def find_script(sub_path); end
 
     # RDL Type: () -> Ronin::Repository
@@ -661,24 +661,24 @@ module Ronin
   end
 
   class URL
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def host; end
 
     # RDL Type: () -> nil
     sig { void }
     def port_number; end
 
-    # RDL Type: () -> Array<URL>
-    sig { returns(T::Array[URL]) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def query_string; end
 
-    # RDL Type: (String) -> String
-    sig { params(query: String).returns(String) }
+    # RDL Type: (XXX) -> XXX
+    sig { params(query: T.untyped).returns(T.untyped) }
     def query_string=(query); end
 
-    # RDL Type: () -> (false or true)
-    sig { returns(T.any(FalseClass, TrueClass)) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def to_uri; end
 
     # RDL Type: () -> String
@@ -691,8 +691,8 @@ module Ronin
   end
 
   class URLQueryParam
-    # RDL Type: () -> String
-    sig { returns(String) }
+    # RDL Type: () -> XXX
+    sig { returns(T.untyped) }
     def to_s; end
 
     # RDL Type: () -> String
@@ -723,38 +723,38 @@ module Ronin
   module Model
     module HasAuthors
       module ClassMethods
-        # RDL Type: (String) -> Array<URL>
-        sig { params(name: String).returns(T::Array[URL]) }
+        # RDL Type: (XXX) -> XXX
+        sig { params(name: T.untyped).returns(T.untyped) }
         def written_by(name); end
 
-        # RDL Type: (String) -> Array<URL>
-        sig { params(name: String).returns(T::Array[URL]) }
+        # RDL Type: (XXX) -> XXX
+        sig { params(name: T.untyped).returns(T.untyped) }
         def written_for(name); end
       end
     end
 
     module HasDescription
       module ClassMethods
-        # RDL Type: (String) -> Array<URL>
-        sig { params(fragment: String).returns(T::Array[URL]) }
+        # RDL Type: (XXX) -> XXX
+        sig { params(fragment: T.untyped).returns(T.untyped) }
         def describing(fragment); end
       end
     end
 
     module HasLicense
       module ClassMethods
-        # RDL Type: (String) -> Array<URL>
-        sig { params(license: String).returns(T::Array[URL]) }
+        # RDL Type: ([ to_s: () -> String ]) -> XXX
+        sig { params(license: T.untyped).returns(T.untyped) }
         def licensed_under(license); end
       end
 
       module InstanceMethods
-        # RDL Type: (String) -> Array<URL>
-        sig { params(name: String).returns(T::Array[URL]) }
+        # RDL Type: (XXX) -> XXX
+        sig { params(name: T.untyped).returns(T.untyped) }
         def licensed_under(name); end
 
-        # RDL Type: (String) -> Array<URL>
-        sig { params(name: String).returns(T::Array[URL]) }
+        # RDL Type: (XXX) -> XXX
+        sig { params(name: T.untyped).returns(T.untyped) }
         def license!(name); end
       end
     end
@@ -800,11 +800,11 @@ module Ronin
       sig { returns(T.any(FalseClass, TrueClass)) }
       def built?; end
 
-      # RDL Type: (String) -> String
-      sig { params(message: String).returns(String) }
+      # RDL Type: (String) -> XXX
+      sig { params(message: String).returns(T.untyped) }
       def build_failed!(message); end
 
-      # RDL Type: () {XXX} -> Ronin::Script::Buildable
+      # RDL Type: () -> Ronin::Script::Buildable
       sig { returns(Ronin::Script::Buildable) }
       def build; end
     end
@@ -818,11 +818,11 @@ module Ronin
       sig { returns(T.any(FalseClass, TrueClass)) }
       def evacuated?; end
 
-      # RDL Type: (String) -> String
-      sig { params(message: String).returns(String) }
+      # RDL Type: (String) -> XXX
+      sig { params(message: String).returns(T.untyped) }
       def deploy_failed!(message); end
 
-      # RDL Type: () {XXX} -> Ronin::Script::Deployable
+      # RDL Type: () -> Ronin::Script::Deployable
       sig { returns(Ronin::Script::Deployable) }
       def deploy; end
 
@@ -832,8 +832,8 @@ module Ronin
     end
 
     class Path
-      # RDL Type: () -> String
-      sig { returns(String) }
+      # RDL Type: () -> nil
+      sig { void }
       def class_path; end
 
       # RDL Type: () -> XXX
@@ -848,8 +848,8 @@ module Ronin
       sig { returns(T.any(FalseClass, TrueClass)) }
       def updated?; end
 
-      # RDL Type: () -> String
-      sig { returns(String) }
+      # RDL Type: () -> XXX
+      sig { returns(T.untyped) }
       def missing?; end
 
       # RDL Type: () -> (false or true)
@@ -860,8 +860,8 @@ module Ronin
       sig { returns(T.any(FalseClass, TrueClass)) }
       def sync; end
 
-      # RDL Type: () -> String
-      sig { returns(String) }
+      # RDL Type: () -> nil
+      sig { void }
       def clean; end
 
       # RDL Type: () -> String
@@ -874,16 +874,16 @@ module Ronin
       sig { returns(String) }
       def short_name; end
 
-      # RDL Type: (String) -> Ronin::Script::Testable
-      sig { params(path: String).returns(Ronin::Script::Testable) }
+      # RDL Type: (XXX) -> XXX
+      sig { params(path: T.untyped).returns(T.untyped) }
       def load_from(path); end
 
-      # RDL Type: (?Hash<:import, { flag: XXX, usage: XXX }>) -> Array<Ronin::Script::InstanceMethods>
-      sig { params(attributes: T::Hash[Symbol, T.untyped]).returns(T::Array[Ronin::Script::InstanceMethods]) }
+      # RDL Type: (?XXX) -> Array<Ronin::Script::InstanceMethods>
+      sig { params(attributes: T.untyped).returns(T::Array[Ronin::Script::InstanceMethods]) }
       def load_all(attributes = nil); end
 
-      # RDL Type: (?Hash<:import, { flag: XXX, usage: XXX }>) -> Ronin::Script::Testable
-      sig { params(attributes: T::Hash[Symbol, T.untyped]).returns(Ronin::Script::Testable) }
+      # RDL Type: (?XXX) -> XXX
+      sig { params(attributes: T.untyped).returns(T.untyped) }
       def load_first(attributes = nil); end
     end
 
@@ -896,12 +896,12 @@ module Ronin
       sig { returns(T.any(FalseClass, TrueClass)) }
       def prepared_for_cache?; end
 
-      # RDL Type: () -> String
-      sig { returns(String) }
+      # RDL Type: () -> XXX
+      sig { returns(T.untyped) }
       def cached?; end
 
-      # RDL Type: (*XXX) -> Array<URL>
-      sig { params(arguments: T.untyped).returns(T::Array[URL]) }
+      # RDL Type: (*XXX) -> nil
+      sig { params(arguments: T.untyped).void }
       def run(*arguments); end
 
       # RDL Type: () -> String
@@ -918,8 +918,8 @@ module Ronin
       sig { returns(T.any(FalseClass, TrueClass)) }
       def test!; end
 
-      # RDL Type: (String) -> String
-      sig { params(message: String).returns(String) }
+      # RDL Type: (String) -> XXX
+      sig { params(message: String).returns(T.untyped) }
       def flunk(message); end
 
       # RDL Type: () -> Ronin::Script::Testable
@@ -950,12 +950,12 @@ module Ronin
       sig { params(name: T.any(String, Symbol), pattern: T.any(Regexp, String), message: String).returns(Ronin::Script::Testable) }
       def test_no_match(name, pattern, message = nil); end
 
-      # RDL Type: ((String or Symbol), Array<String>, ?String) -> Ronin::Script::Testable
-      sig { params(name: T.any(String, Symbol), expected_values: T::Array[String], message: String).returns(Ronin::Script::Testable) }
+      # RDL Type: ((String or Symbol), ([ include?: (String) -> XXX ] and [ inspect: () -> XXX ]), ?String) -> Ronin::Script::Testable
+      sig { params(name: T.any(String, Symbol), expected_values: T.untyped, message: String).returns(Ronin::Script::Testable) }
       def test_in(name, expected_values, message = nil); end
 
-      # RDL Type: ((String or Symbol), Array<String>, ?String) -> Ronin::Script::Testable
-      sig { params(name: T.any(String, Symbol), unexpected_values: T::Array[String], message: String).returns(Ronin::Script::Testable) }
+      # RDL Type: ((String or Symbol), ([ include?: (String) -> XXX ] and [ inspect: () -> XXX ]), ?String) -> Ronin::Script::Testable
+      sig { params(name: T.any(String, Symbol), unexpected_values: T.untyped, message: String).returns(Ronin::Script::Testable) }
       def test_not_in(name, unexpected_values, message = nil); end
     end
   end
@@ -969,28 +969,28 @@ module Ronin
       end
 
       class Command
-        # RDL Type: (?Hash<:import, { flag: XXX, usage: XXX }>) -> self
-        sig { params(options: T::Hash[Symbol, T.untyped]).returns(T.self_type) }
+        # RDL Type: (?XXX) -> self
+        sig { params(options: T.untyped).returns(T.self_type) }
         def initialize(options = nil); end
 
-        # RDL Type: (?Array<String>) -> (false or true)
-        sig { params(argv: T::Array[String]).returns(T.any(FalseClass, TrueClass)) }
+        # RDL Type: (?XXX) -> (false or true)
+        sig { params(argv: T.untyped).returns(T.any(FalseClass, TrueClass)) }
         def start(argv = nil); end
 
-        # RDL Type: (?Hash<:import, { flag: XXX, usage: XXX }>) -> (false or true)
-        sig { params(options: T::Hash[Symbol, T.untyped]).returns(T.any(FalseClass, TrueClass)) }
+        # RDL Type: (?XXX) -> (false or true)
+        sig { params(options: T.untyped).returns(T.any(FalseClass, TrueClass)) }
         def run(options = nil); end
 
-        # RDL Type: () -> String
-        sig { returns(String) }
+        # RDL Type: () -> XXX
+        sig { returns(T.untyped) }
         def setup; end
 
-        # RDL Type: () -> Array<URL>
-        sig { returns(T::Array[URL]) }
+        # RDL Type: () -> nil
+        sig { void }
         def execute; end
 
-        # RDL Type: () -> String
-        sig { returns(String) }
+        # RDL Type: () -> nil
+        sig { void }
         def cleanup; end
 
         # RDL Type: () {(([ banner: () -> XXX ] and [ banner=: (String) -> XXX ] and [ separator: (String) -> XXX ])) -> nil} -> OptionParser
@@ -1009,34 +1009,34 @@ module Ronin
         sig { returns(T.self_type) }
         def initialize; end
 
-        # RDL Type: (?Number) {() -> (Hash<XXX, XXX> or String)} -> String
-        sig { params(n: Integer).returns(String) }
+        # RDL Type: (?Number) {() -> (Hash<XXX, XXX> or String)} -> nil
+        sig { params(n: Integer).void }
         def indent(n = nil); end
 
-        # RDL Type: (String) -> String
-        sig { params(title: String).returns(String) }
+        # RDL Type: (XXX) -> nil
+        sig { params(title: T.untyped).void }
         def print_title(title); end
 
-        # RDL Type: (String) {XXX} -> String
-        sig { params(title: String).returns(String) }
+        # RDL Type: (XXX) {XXX} -> nil
+        sig { params(title: T.untyped).void }
         def print_section(title); end
 
-        # RDL Type: ([ each: () {(XXX) -> XXX} -> XXX ], ?[ []: (:title) -> XXX ]) -> String
-        sig { params(array: T.untyped, options: T.untyped).returns(String) }
+        # RDL Type: ([ each: () {(XXX) -> XXX} -> XXX ], ?[ []: (:title) -> XXX ]) -> nil
+        sig { params(array: T.untyped, options: T.untyped).void }
         def print_array(array, options = nil); end
 
-        # RDL Type: (([ each: () {(XXX, XXX) -> XXX} -> XXX ] and [ keys: () -> XXX ]), ?[ []: (:title) -> XXX ]) -> String
-        sig { params(hash: T.untyped, options: T.untyped).returns(String) }
+        # RDL Type: (([ each: () {(XXX, XXX) -> XXX} -> XXX ] and [ keys: () -> XXX ]), ?[ []: (:title) -> XXX ]) -> nil
+        sig { params(hash: T.untyped, options: T.untyped).void }
         def print_hash(hash, options = nil); end
       end
 
       class ResourcesCommand
-        # RDL Type: () -> Array<URL>
-        sig { returns(T::Array[URL]) }
+        # RDL Type: () -> XXX
+        sig { returns(T.untyped) }
         def execute; end
 
-        # RDL Type: (String) -> String
-        sig { params(resource: String).returns(String) }
+        # RDL Type: ([ to_s: () -> String ]) -> nil
+        sig { params(resource: T.untyped).void }
         def print_resource(resource); end
 
         # RDL Type: (([ each: () {(XXX) -> XXX} -> XXX ] and [ to_csv: () -> XXX ] and [ to_json: () -> XXX ] and [ to_xml: () -> XXX ] and [ to_yaml: () -> XXX ])) -> XXX
@@ -1045,24 +1045,24 @@ module Ronin
       end
 
       class ScriptCommand
-        # RDL Type: (?Hash<:import, { flag: XXX, usage: XXX }>) -> self
-        sig { params(options: T::Hash[Symbol, T.untyped]).returns(T.self_type) }
+        # RDL Type: (?XXX) -> self
+        sig { params(options: T.untyped).returns(T.self_type) }
         def initialize(options = nil); end
 
-        # RDL Type: (?Array<String>) -> (false or true)
-        sig { params(argv: T::Array[String]).returns(T.any(FalseClass, TrueClass)) }
+        # RDL Type: (?([ []: (Number, (XXX or XXX)) -> XXX ] and [ index: (String) -> XXX ] and [ length: () -> XXX ])) -> (false or true)
+        sig { params(argv: T.untyped).returns(T.any(FalseClass, TrueClass)) }
         def start(argv = nil); end
 
         # RDL Type: () -> XXX
         sig { returns(T.untyped) }
         def setup; end
 
-        # RDL Type: () -> Array<URL>
-        sig { returns(T::Array[URL]) }
+        # RDL Type: () -> XXX
+        sig { returns(T.untyped) }
         def execute; end
 
-        # RDL Type: () -> String
-        sig { returns(String) }
+        # RDL Type: () -> XXX
+        sig { returns(T.untyped) }
         def load!; end
 
         # RDL Type: () {(([ banner=: (String) -> XXX ] and [ separator: (String) -> XXX ])) -> XXX} -> OptionParser
@@ -1072,12 +1072,12 @@ module Ronin
 
       module Commands
         class Campaigns
-          # RDL Type: () -> Array<URL>
-          sig { returns(T::Array[URL]) }
+          # RDL Type: () -> nil
+          sig { void }
           def execute; end
 
-          # RDL Type: ((String and [ description: () -> XXX ] and [ name: () -> XXX ] and [ organizations: () -> XXX ] and [ targets: () -> XXX ])) -> String
-          sig { params(campaign: T.untyped).returns(String) }
+          # RDL Type: (([ description: () -> XXX ] and [ name: () -> XXX ] and [ organizations: () -> XXX ] and [ targets: () -> XXX ] and [ to_s: () -> String ])) -> nil
+          sig { params(campaign: T.untyped).void }
           def print_resource(campaign); end
         end
 
@@ -1086,24 +1086,24 @@ module Ronin
           sig { void }
           def setup; end
 
-          # RDL Type: () -> Array<URL>
-          sig { returns(T::Array[URL]) }
+          # RDL Type: () -> nil
+          sig { void }
           def execute; end
         end
 
         class Creds
-          # RDL Type: () -> Array<URL>
-          sig { returns(T::Array[URL]) }
+          # RDL Type: () -> nil
+          sig { void }
           def execute; end
 
-          # RDL Type: (String) -> String
-          sig { params(cred: String).returns(String) }
+          # RDL Type: ([ to_s: () -> String ]) -> nil
+          sig { params(cred: T.untyped).void }
           def print_resource(cred); end
         end
 
         class Exec
-          # RDL Type: (String, ?Array<String>) -> self
-          sig { params(script: String, arguments: T::Array[String]).returns(T.self_type) }
+          # RDL Type: (((IO or String) and [ dump: () -> XXX ] and [ to_str: () -> String ]), ?Array<String>) -> self
+          sig { params(script: T.untyped, arguments: T::Array[String]).returns(T.self_type) }
           def initialize(script, arguments = nil); end
 
           # RDL Type: () -> (false or true)
@@ -1120,48 +1120,48 @@ module Ronin
           sig { returns(Integer) }
           def setup; end
 
-          # RDL Type: () -> String
-          sig { returns(String) }
+          # RDL Type: () -> XXX
+          sig { returns(T.untyped) }
           def execute; end
 
-          # RDL Type: (String, String) -> Number
-          sig { params(string: String, index: String).returns(Integer) }
+          # RDL Type: (String, XXX) -> Number
+          sig { params(string: String, index: T.untyped).returns(Integer) }
           def fuzz_file(string, index); end
 
-          # RDL Type: (String, String) -> Number
-          sig { params(string: String, index: String).returns(Integer) }
+          # RDL Type: (String, XXX) -> nil
+          sig { params(string: String, index: T.untyped).void }
           def fuzz_command(string, index); end
 
-          # RDL Type: (String, String) -> Number
-          sig { params(string: String, index: String).returns(Integer) }
+          # RDL Type: ([ inspect: () -> XXX ], XXX) -> XXX
+          sig { params(string: T.untyped, index: T.untyped).returns(T.untyped) }
           def fuzz_network(string, index); end
 
-          # RDL Type: (String, String) -> String
-          sig { params(string: String, index: String).returns(String) }
+          # RDL Type: ([ to_s: () -> String ], XXX) -> nil
+          sig { params(string: T.untyped, index: T.untyped).void }
           def print_fuzz(string, index); end
 
-          # RDL Type: (String) -> Object
-          sig { params(string: String).returns(Object) }
+          # RDL Type: ((Object and [ []: (Range<Number>) -> XXX ] and [ upcase: () -> XXX ])) -> Object
+          sig { params(string: T.untyped).returns(Object) }
           def parse_pattern(string); end
 
-          # RDL Type: (String) -> String
-          sig { params(string: String).returns(String) }
+          # RDL Type: (([ include?: (String) -> XXX ] and [ split: (String, Number) -> XXX ])) -> XXX
+          sig { params(string: T.untyped).returns(T.untyped) }
           def parse_substitution(string); end
         end
 
         class Help
-          # RDL Type: () -> String
-          sig { returns(String) }
+          # RDL Type: () -> nil
+          sig { void }
           def execute; end
         end
 
         class Hosts
-          # RDL Type: () -> Array<URL>
-          sig { returns(T::Array[URL]) }
+          # RDL Type: () -> XXX
+          sig { returns(T.untyped) }
           def execute; end
 
-          # RDL Type: ((String and [ address: () -> XXX ] and [ email_addresses: () -> XXX ] and [ ip_addresses: () -> XXX ] and [ last_scanned_at: () -> XXX ] and [ open_ports: () -> XXX ] and [ organization: () -> XXX ] and [ urls: () -> XXX ])) -> String
-          sig { params(host: T.untyped).returns(String) }
+          # RDL Type: (([ address: () -> XXX ] and [ email_addresses: () -> XXX ] and [ ip_addresses: () -> XXX ] and [ last_scanned_at: () -> XXX ] and [ open_ports: () -> XXX ] and [ organization: () -> XXX ] and [ to_s: () -> String ] and [ urls: () -> XXX ])) -> nil
+          sig { params(host: T.untyped).void }
           def print_resource(host); end
         end
 
@@ -1170,28 +1170,28 @@ module Ronin
           sig { returns(T.any(FalseClass, TrueClass)) }
           def setup; end
 
-          # RDL Type: () -> String
-          sig { returns(String) }
+          # RDL Type: () -> XXX
+          sig { returns(T.untyped) }
           def execute; end
         end
 
         class Ips
-          # RDL Type: () -> Array<URL>
-          sig { returns(T::Array[URL]) }
+          # RDL Type: () -> XXX
+          sig { returns(T.untyped) }
           def execute; end
 
-          # RDL Type: ((String and [ address: () -> XXX ] and [ host_names: () -> XXX ] and [ last_scanned_at: () -> XXX ] and [ mac_addresses: () -> XXX ] and [ open_ports: () -> XXX ] and [ organization: () -> XXX ])) -> String
-          sig { params(ip: T.untyped).returns(String) }
+          # RDL Type: (([ address: () -> XXX ] and [ host_names: () -> XXX ] and [ last_scanned_at: () -> XXX ] and [ mac_addresses: () -> XXX ] and [ open_ports: () -> XXX ] and [ organization: () -> XXX ] and [ to_s: () -> String ])) -> nil
+          sig { params(ip: T.untyped).void }
           def print_resource(ip); end
         end
 
         class Repos
-          # RDL Type: () -> String
-          sig { returns(String) }
+          # RDL Type: () -> nil
+          sig { void }
           def execute; end
 
-          # RDL Type: (([ description: () -> XXX ] and [ domain: () -> XXX ] and [ executables: () -> XXX ] and [ installed?: () -> XXX ] and [ name: () -> XXX ] and [ path: () -> XXX ] and [ scm: () -> XXX ] and [ script_paths: () -> XXX ] and [ source: () -> XXX ] and [ title: () -> XXX ] and [ uri: () -> XXX ] and [ verbose?: () -> XXX ] and [ website: () -> XXX ])) -> String
-          sig { params(repo: T.untyped).returns(String) }
+          # RDL Type: (([ description: () -> XXX ] and [ domain: () -> XXX ] and [ executables: () -> XXX ] and [ installed?: () -> XXX ] and [ name: () -> XXX ] and [ path: () -> XXX ] and [ scm: () -> XXX ] and [ script_paths: () -> XXX ] and [ source: () -> XXX ] and [ title: () -> XXX ] and [ uri: () -> XXX ] and [ verbose?: () -> XXX ] and [ website: () -> XXX ])) -> nil
+          sig { params(repo: T.untyped).void }
           def print_repository(repo); end
         end
 
@@ -1200,8 +1200,8 @@ module Ronin
           sig { returns(T.any(FalseClass, TrueClass)) }
           def setup; end
 
-          # RDL Type: () -> String
-          sig { returns(String) }
+          # RDL Type: () -> XXX
+          sig { returns(T.untyped) }
           def execute; end
         end
 
@@ -1210,18 +1210,18 @@ module Ronin
           sig { returns(T.any(FalseClass, TrueClass)) }
           def setup; end
 
-          # RDL Type: () -> String
-          sig { returns(String) }
+          # RDL Type: () -> XXX
+          sig { returns(T.untyped) }
           def execute; end
 
-          # RDL Type: ([ script_paths: () -> XXX ]) -> String
-          sig { params(repository: T.untyped).returns(String) }
+          # RDL Type: ([ script_paths: () -> XXX ]) -> XXX
+          sig { params(repository: T.untyped).returns(T.untyped) }
           def print_cache_errors(repository); end
         end
 
         class Urls
-          # RDL Type: ((String and [ fragment: () -> XXX ] and [ host_name: () -> XXX ] and [ last_scanned_at: () -> XXX ] and [ path: () -> XXX ] and [ port: () -> XXX ] and [ query_params: () -> XXX ])) -> String
-          sig { params(url: T.untyped).returns(String) }
+          # RDL Type: (([ fragment: () -> XXX ] and [ host_name: () -> XXX ] and [ last_scanned_at: () -> XXX ] and [ path: () -> XXX ] and [ port: () -> XXX ] and [ query_params: () -> XXX ] and [ to_s: () -> String ])) -> nil
+          sig { params(url: T.untyped).void }
           def print_resource(url); end
         end
 
@@ -1230,8 +1230,8 @@ module Ronin
           sig { returns(T.untyped) }
           def execute; end
 
-          # RDL Type: () -> Array<u>
-          sig { returns(T::Array[T.untyped]) }
+          # RDL Type: () -> XXX
+          sig { returns(T.untyped) }
           def parse_template; end
 
           # RDL Type: () -> Ronin::Wordlist

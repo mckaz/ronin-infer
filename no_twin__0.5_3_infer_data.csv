@@ -295,7 +295,7 @@ Ronin::EmailAddress,inspect,Ret,"",String,String,E,Constraints,"def inspect
 
       return hosts
     end"
-[s]Ronin::HostName,lookup,Ret,"",Array<{ [s]Ronin::HostName#lookup array_param: array_param_#<Parser::Source::Map::Collection:0x00007fee75518568> }>,Array<HostName>,P,Constraints,"def self.lookup(addr,nameserver=nil)
+[s]Ronin::HostName,lookup,Ret,"",Array<{ [s]Ronin::HostName#lookup array_param: array_param_#<Parser::Source::Map::Collection:0x0000000005031560> }>,Array<HostName>,P,Constraints,"def self.lookup(addr,nameserver=nil)
       addr = addr.to_s
       ip = IPAddress.first_or_new(:address => addr)
 
@@ -332,7 +332,7 @@ Ronin::HostName,lookup!,Arg,nameserver,?{ Ronin::HostName#lookup! arg: nameserve
 
       return ips
     end"
-Ronin::HostName,lookup!,Ret,"",Array<{ Ronin::HostName#lookup! array_param: array_param_#<Parser::Source::Map::Collection:0x00007fee7553bb30> }>,Array<IPAddress>,P,Constraints,"def lookup!(nameserver=nil)
+Ronin::HostName,lookup!,Ret,"",Array<{ Ronin::HostName#lookup! array_param: array_param_#<Parser::Source::Map::Collection:0x0000000005043f80> }>,Array<IPAddress>,P,Constraints,"def lookup!(nameserver=nil)
       resolver = Resolv.resolver(nameserver)
       ips = begin
               resolver.getaddresses(self.address)
@@ -560,7 +560,7 @@ Ronin::HostName,last_scanned_at,Ret,"",nil,Time,T,Constraints,"def last_scanned_
 
       return ips
     end"
-[s]Ronin::IPAddress,lookup,Ret,"",Array<{ [s]Ronin::IPAddress#lookup array_param: array_param_#<Parser::Source::Map::Collection:0x00007fee70ec7fa0> }>,Array<IPAddress>,P,Constraints,"def self.lookup(name,nameserver=nil)
+[s]Ronin::IPAddress,lookup,Ret,"",Array<{ [s]Ronin::IPAddress#lookup array_param: array_param_#<Parser::Source::Map::Collection:0x0000000005130998> }>,Array<IPAddress>,P,Constraints,"def self.lookup(name,nameserver=nil)
       host = HostName.first_or_new(:address => name)
       resolver = Resolv.resolver(nameserver)
 
@@ -596,7 +596,7 @@ Ronin::IPAddress,lookup!,Arg,nameserver,?{ Ronin::IPAddress#lookup! arg: nameser
 
       return hosts
     end"
-Ronin::IPAddress,lookup!,Ret,"",Array<{ Ronin::IPAddress#lookup! array_param: array_param_#<Parser::Source::Map::Collection:0x00007fee750c71f8> }>,Array<HostName>,P,Constraints,"def lookup!(nameserver=nil)
+Ronin::IPAddress,lookup!,Ret,"",Array<{ Ronin::IPAddress#lookup! array_param: array_param_#<Parser::Source::Map::Collection:0x0000000005157818> }>,Array<HostName>,P,Constraints,"def lookup!(nameserver=nil)
       resolver = Resolv.resolver(nameserver)
       hosts = begin
                 resolver.getnames(self.address.to_s)
@@ -1504,7 +1504,7 @@ Ronin::WebCredential,to_s,Ret,"",String,String,E,Constraints,"def to_s
       yield if block_given?
       return nil
     end"
-[s]Ronin::Database,map,Ret,"",Array<{ [s]Ronin::Database#map array_param: array_param_#<Parser::Source::Map::Collection:0x00007fee755215c8> }>,Array,P,Constraints,"def self.map
+[s]Ronin::Database,map,Ret,"",Array<{ [s]Ronin::Database#map array_param: array_param_#<Parser::Source::Map::Collection:0x0000000005669158> }>,Array,P,Constraints,"def self.map
       results = []
 
       repositories.each_key do |name|
@@ -1627,7 +1627,7 @@ Ronin::Model::InstanceMethods,humanize_attributes,Arg,options,?[ []: (:exclude) 
 
         return formatted
       end"
-Ronin::Model::InstanceMethods,humanize_attributes,Ret,"","Hash<{ Ronin::Model::InstanceMethods#humanize_attributes hash_param_key: hash_param_key_#<Parser::Source::Map::Collection:0x00007fee75598718> }, { Ronin::Model::InstanceMethods#humanize_attributes hash_param_val: hash_param_val_#<Parser::Source::Map::Collection:0x00007fee75598718> }>","Hash<String, String>",P,Constraints,"def humanize_attributes(options={})
+Ronin::Model::InstanceMethods,humanize_attributes,Ret,"","Hash<{ Ronin::Model::InstanceMethods#humanize_attributes hash_param_key: hash_param_key_#<Parser::Source::Map::Collection:0x0000000003f25ac8> }, { Ronin::Model::InstanceMethods#humanize_attributes hash_param_val: hash_param_val_#<Parser::Source::Map::Collection:0x0000000003f25ac8> }>","Hash<String, String>",P,Constraints,"def humanize_attributes(options={})
         exclude = [:id, :type]
 
         if options[:exclude]
@@ -2439,7 +2439,7 @@ Ronin::UI::CLI::Command,run,Ret,"",(false or true),(false or true),E,Constraints
 [s]Ronin::UI::CLI::Command,options?,Ret,"",{ [s]Ronin::UI::CLI::Command#options? ret: ret },(false or true),N,,"def self.options?
           each_option.any?
         end"
-[s]Ronin::UI::CLI::Command,arguments,Ret,"",Array<{ [s]Ronin::UI::CLI::Command#arguments array_param: array_param_#<Parser::Source::Map::Collection:0x00007fee76eb8928> }>,Array<Symbol>,P,Constraints,"def self.arguments
+[s]Ronin::UI::CLI::Command,arguments,Ret,"",Array<{ [s]Ronin::UI::CLI::Command#arguments array_param: array_param_#<Parser::Source::Map::Collection:0x000000000520dfa0> }>,Array<Symbol>,P,Constraints,"def self.arguments
           @arguments ||= []
         end"
 [s]Ronin::UI::CLI::Command,argument,Arg,name,[ to_sym: () -> { { [s]Ronin::UI::CLI::Command#argument arg: name }#to_sym call_ret: ret } ],Symbol,TS,Constraints,"def self.argument(name,options={})
